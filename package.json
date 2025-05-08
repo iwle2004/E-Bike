@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "react-native-ble-manager": "^11.5.3",
+    "use-sound": "^4.0.1"
+  },
+  "devDependencies": {
+    "@types/web-bluetooth": "^0.0.20"
+  }
+}
