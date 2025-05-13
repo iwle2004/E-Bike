@@ -1,0 +1,82 @@
+.page-container {
+    min-height: 100vh;
+    background-color: #f3f4f6; /* light gray */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  .card {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  
+  .description {
+    color: #4b5563; /* gray-600 */
+    margin-bottom: 1rem;
+  }
+  
+  .preview {
+    border-radius: 0.75rem;
+    margin-bottom: 1rem;
+    max-height: 250px;
+    object-fit: contain;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .file-input {
+    margin-bottom: 1rem;
+  }
+  
+  .submit-button {
+    width: 100%;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    color: white;
+    background-color: #10b981; /* green */
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .submit-button:hover {
+    background-color: #059669;
+  }
+  
+  .submit-button:disabled {
+    background-color: #d1d5db; /* gray */
+    cursor: not-allowed;
+  }
+  
+  .back-button {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #3b82f6; /* blue */
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    color: white;
+    background-color: #10b981; /* green */
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  

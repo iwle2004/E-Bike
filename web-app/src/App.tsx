@@ -5,6 +5,7 @@ import { KeyStateProvider } from './context/KeyStateContext'; // KeyStateProvide
 import theme from './theme';
 import Map from './react/Map';
 import Top from './react/Top';
+import Proof from './react/Proof';
 import './App.css';
 import NotFound from './react/NotFound';
 
@@ -16,6 +17,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Top />} />
           <Route path="/map" element={<Map />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/proof" element={<Proof/>} />
         </Routes>
       </KeyStateProvider>
     </ThemeProvider>
