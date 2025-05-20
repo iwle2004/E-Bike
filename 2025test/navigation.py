@@ -9,10 +9,10 @@ import json
 Serch_Box = "35.46086527229766, 135.38547415225145,35.47810686320488, 135.4033106490184"  # 南緯,西経,北緯,東経
 
 # 検索する店舗の検索に必要なタグ(amenityかshop)
-Serch_key = "amenity"
+Serch_key = "shop"
 
 # 検索する店舗の種類
-Serch_type = "=cafe"
+Serch_type = "=convenience"
 
 #名前で店舗を検索(検索しない場合は空白)
 Serch_name = ""
@@ -118,6 +118,6 @@ m = folium.Map(location=(mean_lat, mean_lon), zoom_start=15)
 for i, p in enumerate(points):
     folium.Marker(p, tooltip=f"地点{i}: {p}").add_to(m)
 folium.PolyLine(route_coords, color="green", weight=4, tooltip="最短徒歩ルート").add_to(m)
-m.save("map.html")
+m.save("maizuru_full_tsp_route.html")
 
 print("✅ 東舞鶴ナビ作成完了: maizuru_full_tsp_route.html")
