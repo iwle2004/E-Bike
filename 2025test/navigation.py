@@ -3,19 +3,23 @@ import openrouteservice
 from openrouteservice import convert
 from itertools import permutations
 import requests
+import webbrowser
 import json
 
 # 検索する地理範囲
 Serch_Box = "35.46086527229766, 135.38547415225145,35.47810686320488, 135.4033106490184"  # 南緯,西経,北緯,東経
 
 # 検索する店舗の検索に必要なタグ(amenityかshop)
-Serch_key = "shop"
+Serch_key = "amenity"
 
 # 検索する店舗の種類
-Serch_type = "=convenience"
+Serch_type = "=cafe"
 
 #名前で店舗を検索(検索しない場合は空白)
 Serch_name = ""
+
+#現在地
+Current_location = 35.4712154947793, 135.39665827443653
 
 # Overpass QL クエリ
 if Serch_name:
@@ -37,9 +41,9 @@ url = "http://overpass-api.de/api/interpreter"
 # リクエスト送信
 response = requests.post(url, data={"data": query})
 data = response.json()
-points = []
+points = [(Current_location)]
 # 結果を表示（座標と店名）
-i = 0
+i = 1
 for element in data["elements"]:
     lat = element["lat"]
     lon = element["lon"]
@@ -119,5 +123,6 @@ for i, p in enumerate(points):
     folium.Marker(p, tooltip=f"地点{i}: {p}").add_to(m)
 folium.PolyLine(route_coords, color="green", weight=4, tooltip="最短徒歩ルート").add_to(m)
 m.save("maizuru_full_tsp_route.html")
+webbrowser.open("maizuru_full_tsp_route.html")
 
 print("✅ 東舞鶴ナビ作成完了: maizuru_full_tsp_route.html")
