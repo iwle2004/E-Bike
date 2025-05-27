@@ -1,0 +1,92 @@
+/* AuthPage.css */
+
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(to bottom right, #fceabb, #f8b500); /* warm yellow */
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .auth-card {
+    background-color: #fff7e6; /* light creamy background */
+    padding: 2rem;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5c07b; /* subtle brownish border */
+  }
+  
+  .auth-title {
+    text-align: center;
+    font-size: 24px;
+    color: #5d3a00; /* dark brown */
+    margin-bottom: 1.5rem;
+  }
+  
+  .auth-tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .auth-tabs button {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    background-color: #ffeda3;
+    cursor: pointer;
+    color: #5d3a00;
+    font-weight: bold;
+    transition: background 0.3s;
+  }
+  
+  .auth-tabs button.active {
+    background-color: #f8b500; /* strong yellow */
+    color: white;
+  }
+  
+  .auth-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .auth-form label {
+    margin-top: 1rem;
+    color: #5d3a00;
+    font-weight: 500;
+  }
+  
+  .auth-form input {
+    padding: 0.5rem;
+    border: 1px solid #e5c07b;
+    border-radius: 6px;
+    margin-top: 0.25rem;
+    font-size: 1rem;
+  }
+  
+  .auth-button {
+    margin-top: 1.5rem;
+    padding: 0.75rem;
+    background-color: #d69e00; /* deeper yellow */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .auth-button:hover {
+    background-color: #b38000; /* brownish yellow hover */
+  }
+  
+  .error-text {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+  

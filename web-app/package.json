@@ -16,7 +16,7 @@
     "@mui/material": "^5.16.1",
     "@types/leaflet": "^1.9.12",
     "axios": "^1.7.4",
-    "firebase": "^10.12.2",
+    "firebase": "^10.14.1",
     "leaflet": "^1.9.4",
     "leaflet-routing-machine": "^3.2.12",
     "react": "^18.2.0",
