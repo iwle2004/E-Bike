@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import './PhotoSubmitPage.css'
 
 function PhotoSubmitPage() {
     const [file, setFile] = useState(null);

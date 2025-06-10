@@ -1,0 +1,12 @@
+.map-container {
+    height: calc(100vh - 68px);
+    max-width: 900px;
+    margin: 2rem auto;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(23, 105, 170, 0.15);
+  }
+  .leaflet-map {
+    height: 100%;
+    width: 100%;
+  }

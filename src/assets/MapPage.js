@@ -1,5 +1,6 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
+import './MapPage.css'
 function MapPage() {
     const position = [35.4501, 135.3339];
     return (
