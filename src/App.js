@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router';
 import 'leaflet/dist/leaflet.css';
 import MainPage from './assets/MainPage';
 import PhotoSubmitPage from './assets/PhotoSubmitPage';
-import LoginPage from './assets/LoginPage';
+import Auth from './assets/Auth';
 import MapPage from './assets/MapPage';
 import './App.css';
 import { useState } from 'react';
@@ -24,7 +24,7 @@ function App() {
           )}
         </nav>
         <Routes>
-          <Route path="/" element={<LoginPage />} />
+          <Route path="/" element={<Auth />} />
           <Route path="/home" element={<MainPage />} />
           <Route path="/map" element={<MapPage />} />
           <Route path="/submit" element={<PhotoSubmitPage />} />
