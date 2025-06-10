@@ -27,7 +27,6 @@ function Auth() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('darj boldgue');
     try {
       if (isLogin) {
         await signInWithEmailAndPassword(auth, email, password);
@@ -43,7 +42,7 @@ function Auth() {
           createdAt: new Date(),
         });
 
-        navigate('/home'); // 👈 redirect on sign up
+        navigate('/home'); // redirect on sign up
       }
     } catch (err) {
       setError(err.message);
