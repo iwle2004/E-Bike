@@ -1,30 +1,44 @@
-from flask import Flask, jsonify, send_file
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import subprocess
 import os
+import json
 
 app = Flask(__name__)
-CORS(app)  # Reactからの通信を許可する
+CORS(app)
 
-@app.route("/run-navigation", methods=["GET"])
+@app.route("/run-navigation", methods=["POST"])
 def run_navigation():
     try:
-        # server.py のディレクトリを基準に navigation.py のパスを作成
         base_dir = os.path.dirname(os.path.abspath(__file__))
-        nav_path = os.path.join(base_dir, "navigation.py")  # navigation.py の場所に合わせて修正
+        nav_path = os.path.join(base_dir, "navigation.py")
 
-        # navigation.py を実行
-        subprocess.run(["python", nav_path], check=True)
+        tags = request.json.get("tags", [])
+        # tagsが文字列のJSON配列だったらパースする
+        if isinstance(tags, str):
+            tags = json.loads(tags)
+
+        # tagsが ["key=value", ...] 形式のリストならそのまま、
+        # もし {"key": ..., "value": ...} の辞書なら key=value形式に変換
+        if tags and isinstance(tags[0], dict):
+            tag_str = ",".join(f"{t['key']}={t['value']}" for t in tags)
+        else:
+            tag_str = ",".join(tags)
+
+        print("Received tags:", tags)
+        print("Constructed tag string:", tag_str)
+
+        # navigation.pyを引数付きで実行
+        subprocess.run(["python", nav_path, "--tags", tag_str], check=True)
+
         return jsonify({"status": "success"})
-    except subprocess.CalledProcessError:
+    except Exception as e:
+        print("❌ ナビゲーション失敗:", e)
         return jsonify({"status": "error"})
 
 @app.route("/get-map", methods=["GET"])
 def get_map():
-    # HTMLファイルのパスも同様に指定（navigation.pyが生成する想定）
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    html_path = os.path.join(base_dir, "maizuru_full_tsp_route.html")
-
+    html_path = os.path.join(os.path.dirname(__file__), "maizuru_full_tsp_route.html")
     return send_file(html_path)
 
 if __name__ == "__main__":

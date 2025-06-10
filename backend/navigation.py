@@ -1,139 +1,111 @@
-import folium
+import argparse
+import json
+import os
+import requests
+import sys
+from itertools import permutations
 import openrouteservice
 from openrouteservice import convert
-from itertools import permutations
-import requests
-import json
-import sys
+import folium
 
-# 検索する地理範囲
-Serch_Box = "35.44880977985438, 135.35154309496215,35.498076744854764, 135.44095761784553"  # 南緯,西経,北緯,東経
+parser = argparse.ArgumentParser()
+parser.add_argument("--tags", type=str, default="")
+args = parser.parse_args()
 
-# 検索する店舗の検索に必要なタグ(amenityかshop)
-Serch_key = "historic"
+tags_str = args.tags.strip()
+print("Selected tags string:", tags_str)
 
-# 検索する店舗の種類
-Serch_type = "=monument"
-
-# 名前で店舗を検索(検索しない場合は空白)
-Serch_name = ""
-
-# Overpass QL クエリ生成
-if Serch_name:
-    query = f"""
-    [out:json];
-    node[{Serch_key} {Serch_type}]["name"~"{Serch_name}"]({Serch_Box});
-    out body;
-    """
-else:
-    query = f"""
-    [out:json];
-    node[{Serch_key} {Serch_type}]({Serch_Box});
-    out body;
-    """
-
-# Overpass APIエンドポイント
-url = "http://overpass-api.de/api/interpreter"
-
-# リクエスト送信
-try:
-    response = requests.post(url, data={"data": query}, timeout=30)
-    print("📡 ステータスコード:", response.status_code)
-    response.raise_for_status()
-except requests.RequestException as e:
-    print("❌ Overpass API リクエスト失敗:", e)
-    sys.exit(1)
-
-# JSON解析
-try:
-    data = response.json()
-except json.JSONDecodeError:
-    print("❌ JSON解析エラー。レスポンス内容:")
-    print(response.text[:500])
-    sys.exit(1)
-
-# "elements" がなければ終了
-if "elements" not in data:
-    print("⚠️ 'elements' キーがレスポンスに存在しません")
-    sys.exit(1)
-
-# ポイント抽出
-points = []
-for i, element in enumerate(data["elements"]):
-    lat = element["lat"]
-    lon = element["lon"]
-    name = element["tags"].get("name", "(名前なし)")
-    shop_type = element["tags"].get("shop", "(種別不明)")
-    print(f"{name} ({shop_type}): {lat}, {lon}")
-    points.append((lat, lon))
-
-if not points:
-    print("⚠️ 該当する店舗が見つかりませんでした。")
+if not tags_str:
+    print("タグが選択されていません。終了します。")
     sys.exit(0)
 
-# OpenRouteServiceクライアント（APIキーは有効なものに差し替えてください）
-client = openrouteservice.Client(
-    key="5b3ce3597851110001cf6248b9ea1dfdfdb7416eb962ef2ad2bd129e"
-)
-# === 初期地点を設定 ===
-start_point = (35.46872450002604, 135.39500977773056)  # 東舞鶴駅 (lat, lon)
+# "key=value,key=value" 形式を確実にパース
+tags_list = []
+for t in tags_str.split(","):
+    if "=" in t:
+        key, value = t.split("=", 1)
+        tags_list.append((key.strip(), value.strip()))
 
-# === ORS形式に整形（lon, lat）===
-coords = [tuple(reversed(start_point))]  # (lon, lat)
-coords.extend([tuple(reversed(p)) for p in points])
+print("Parsed tags:", tags_list)
 
-# 距離行列を取得
+if not tags_list:
+    print("タグが正しく解析できません。終了します。")
+    sys.exit(0)
+
+# 今は最初のタグだけ使う（複数対応は今後拡張可能）
+key, value = tags_list[0]
+
+search_box = "35.44880977985438, 135.35154309496215,35.498076744854764, 135.44095761784553"
+
+query = f"""
+[out:json];
+node[{key}={value}]({search_box});
+out body;
+"""
+
+url = "http://overpass-api.de/api/interpreter"
+
 try:
-    matrix = client.distance_matrix(coords, profile='foot-walking', metrics=['distance'])["distances"]
-except Exception as e:
-    print("❌ 距離行列の取得に失敗:", e)
+    response = requests.post(url, data={"data": query}, timeout=30)
+    response.raise_for_status()
+except requests.RequestException as e:
+    print("Overpass APIリクエスト失敗:", e)
     sys.exit(1)
 
-# 全探索TSP（巡回セールスマン）アルゴリズム
-def brute_force_tsp(matrix):
-    n = len(matrix)
-    best_path = []
-    min_dist = float('inf')
-    for perm in permutations(range(1, n)):
-        path = [0] + list(perm)
-        dist = sum(matrix[path[i]][path[i+1]] for i in range(n-1))
-        if dist < min_dist:
-            min_dist = dist
-            best_path = path
-    return best_path
+data = response.json()
 
-# 道順取得
-def get_route_coordinates(path_indices):
-    route_coords = []
-    for i in range(len(path_indices) - 1):
-        start = coords[path_indices[i]]
-        end = coords[path_indices[i + 1]]
-        try:
-            route = client.directions(
-                [start, end],
-                profile='foot-walking',
-                radiuses=[600, 600],
-            )
-            decoded = convert.decode_polyline(route["routes"][0]["geometry"])["coordinates"]
-            route_coords.extend(decoded)
-        except Exception as e:
-            print(f"⚠️ ルート取得失敗: {start} → {end}")
-            print(e)
-    return [(lat, lon) for lon, lat in route_coords]
+if "elements" not in data or len(data["elements"]) == 0:
+    print("該当する地点が見つかりませんでした。")
+    sys.exit(0)
 
-# 経路計算と描画
-path = brute_force_tsp(matrix)
-route_coords = get_route_coordinates(path)
+points = []
+for element in data["elements"]:
+    lat = element["lat"]
+    lon = element["lon"]
+    name = element.get("tags", {}).get("name", "(名前なし)")
+    print(f"{name}: {lat}, {lon}")
+    points.append((lat, lon))
 
-# 地図の中心を平均座標に設定
+# 東舞鶴駅を起点に設定
+start_point = (35.46872450002604, 135.39500977773056)
+
+# OpenRouteServiceクライアント初期化（APIキーをあなたのものに置き換えてください）
+client = openrouteservice.Client(key="あなたのAPIキー")
+
+# 経路計算用座標リスト（lon, latの順）
+coords = [tuple(reversed(start_point))]
+coords.extend([tuple(reversed(p)) for p in points])
+
+route_coords = []
+
+for i in range(len(coords) - 1):
+    try:
+        routes = client.directions([coords[i], coords[i+1]], profile='foot-walking')
+        geometry = routes['routes'][0]['geometry']
+        decoded = convert.decode_polyline(geometry)
+        route_coords.extend(decoded['coordinates'])
+    except Exception as e:
+        print(f"ルート取得失敗: {coords[i]} → {coords[i+1]}:", e)
+
+# 地図中心の平均値
 mean_lat = sum(p[0] for p in points) / len(points)
 mean_lon = sum(p[1] for p in points) / len(points)
 
-# 地図描画
 m = folium.Map(location=(mean_lat, mean_lon), zoom_start=15)
+
+# 出発点マーカー
+folium.Marker(start_point, tooltip="出発点（東舞鶴駅）", icon=folium.Icon(color="red")).add_to(m)
+
+# 目的地マーカー
 for i, p in enumerate(points):
     folium.Marker(p, tooltip=f"地点{i}: {p}").add_to(m)
-folium.PolyLine(route_coords, color="green", weight=4, tooltip="最短徒歩ルート").add_to(m)
-m.save("backend\maizuru_full_tsp_route.html")
 
-print("✅ 東舞鶴ナビ作成完了: maizuru_full_tsp_route.html")
+# ルート線を描画（lon,lat→lat,lonに変換）
+if route_coords:
+    route_latlon = [(lat, lon) for lon, lat in route_coords]
+    folium.PolyLine(route_latlon, color="blue", weight=4, opacity=0.7).add_to(m)
+
+# 保存先のパス（適宜変更してください）
+m.save("backend/maizuru_full_tsp_route.html")
+
+print("地図作成完了: backend/maizuru_full_tsp_route.html")
