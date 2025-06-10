@@ -25,7 +25,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_e6ac99edf0d3b0ea07fee0c7a57782aa {
+                #map_62efa9ba6d88556e51e9798722255699 {
                     position: relative;
                     width: 100.0%;
                     height: 100.0%;
@@ -39,16 +39,16 @@
 <body>
     
     
-            <div class="folium-map" id="map_e6ac99edf0d3b0ea07fee0c7a57782aa" ></div>
+            <div class="folium-map" id="map_62efa9ba6d88556e51e9798722255699" ></div>
         
 </body>
 <script>
     
     
-            var map_e6ac99edf0d3b0ea07fee0c7a57782aa = L.map(
-                "map_e6ac99edf0d3b0ea07fee0c7a57782aa",
+            var map_62efa9ba6d88556e51e9798722255699 = L.map(
+                "map_62efa9ba6d88556e51e9798722255699",
                 {
-                    center: [35.4769927, 135.3673525],
+                    center: [35.47332073333334, 135.3971993888889],
                     crs: L.CRS.EPSG3857,
                     ...{
   "zoom": 15,
@@ -63,7 +63,7 @@
 
         
     
-            var tile_layer_a86ed9a3270eabc2b96991fa167eba9c = L.tileLayer(
+            var tile_layer_0fb0ebbe84286bfcf71a73d4008424c0 = L.tileLayer(
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {
   "minZoom": 0,
@@ -80,19 +80,30 @@
             );
         
     
-            tile_layer_a86ed9a3270eabc2b96991fa167eba9c.addTo(map_e6ac99edf0d3b0ea07fee0c7a57782aa);
+            tile_layer_0fb0ebbe84286bfcf71a73d4008424c0.addTo(map_62efa9ba6d88556e51e9798722255699);
         
     
-            var marker_d728d47ba64da6f75c4b6a0ecd61b6b1 = L.marker(
-                [35.4769927, 135.3673525],
+            var marker_31ef35dfc53682b48099d3cf1ef540ca = L.marker(
+                [35.46872450002604, 135.39500977773056],
                 {
 }
-            ).addTo(map_e6ac99edf0d3b0ea07fee0c7a57782aa);
+            ).addTo(map_62efa9ba6d88556e51e9798722255699);
         
     
-            marker_d728d47ba64da6f75c4b6a0ecd61b6b1.bindTooltip(
+            var icon_7e86f6b130482d771c507dd3979819e2 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+            marker_31ef35dfc53682b48099d3cf1ef540ca.bindTooltip(
                 `<div>
-                     地点0: (35.4769927, 135.3673525)
+                     出発点（東舞鶴駅）
                  </div>`,
                 {
   "sticky": true,
@@ -100,15 +111,155 @@
             );
         
     
-            var poly_line_d5759d838b96cea7a1946926f391d823 = L.polyline(
-                [[35.46868, 135.39507], [35.46868, 135.39507], [35.46852, 135.39491], [35.46867, 135.3947], [35.46881, 135.39486], [35.46959, 135.39458], [35.46957, 135.39451], [35.46955, 135.3944], [35.46953, 135.39433], [35.46958, 135.39428], [35.46936, 135.39334], [35.46942, 135.39332], [35.46947, 135.3933], [35.46946, 135.39323], [35.46945, 135.39319], [35.46944, 135.39315], [35.46941, 135.39301], [35.46925, 135.39235], [35.46924, 135.3923], [35.46923, 135.39227], [35.46919, 135.39207], [35.46957, 135.39198], [35.46999, 135.39182], [35.47032, 135.3916], [35.47052, 135.39139], [35.47072, 135.39119], [35.47083, 135.39105], [35.47092, 135.39092], [35.47117, 135.39043], [35.47128, 135.39014], [35.47168, 135.3886], [35.47182, 135.38812], [35.47186, 135.38801], [35.47188, 135.3879], [35.47209, 135.38753], [35.47213, 135.38746], [35.47242, 135.38716], [35.47259, 135.38702], [35.47284, 135.38688], [35.47297, 135.38679], [35.47352, 135.38632], [35.47371, 135.38608], [35.47375, 135.38594], [35.47387, 135.38537], [35.47394, 135.38502], [35.47429, 135.38395], [35.47435, 135.3837], [35.4744, 135.38329], [35.4744, 135.38304], [35.47436, 135.38277], [35.47429, 135.38236], [35.47426, 135.38208], [35.47428, 135.38182], [35.47439, 135.38149], [35.47441, 135.38138], [35.47447, 135.38127], [35.47609, 135.3784], [35.47632, 135.37795], [35.47642, 135.3777], [35.4765, 135.37738], [35.47656, 135.37699], [35.47656, 135.37663], [35.47652, 135.37574], [35.47651, 135.37562], [35.47653, 135.3754], [35.47648, 135.37523], [35.47642, 135.37397], [35.47637, 135.3734], [35.47634, 135.37325], [35.47619, 135.37231], [35.47622, 135.37191], [35.47624, 135.37176], [35.47635, 135.37181], [35.47643, 135.37142], [35.47656, 135.37094], [35.47666, 135.37051], [35.47665, 135.36987], [35.47661, 135.36919], [35.47647, 135.36783], [35.47642, 135.36754], [35.4765, 135.36746], [35.47656, 135.36756], [35.47692, 135.36758], [35.47696, 135.36756], [35.47706, 135.36741]],
-                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "green", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 1.0, "smoothFactor": 1.0, "stroke": true, "weight": 4}
-            ).addTo(map_e6ac99edf0d3b0ea07fee0c7a57782aa);
+                marker_31ef35dfc53682b48099d3cf1ef540ca.setIcon(icon_7e86f6b130482d771c507dd3979819e2);
+            
+    
+            var marker_f3c9438c962272f341837bec23aa39a1 = L.marker(
+                [35.4731577, 135.3888451],
+                {
+}
+            ).addTo(map_62efa9ba6d88556e51e9798722255699);
         
     
-            poly_line_d5759d838b96cea7a1946926f391d823.bindTooltip(
+            marker_f3c9438c962272f341837bec23aa39a1.bindTooltip(
                 `<div>
-                     最短徒歩ルート
+                     地点0: (35.4731577, 135.3888451)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_3657e97e3d7212cb53b64122ddd1c6aa = L.marker(
+                [35.4768546, 135.3688144],
+                {
+}
+            ).addTo(map_62efa9ba6d88556e51e9798722255699);
+        
+    
+            marker_3657e97e3d7212cb53b64122ddd1c6aa.bindTooltip(
+                `<div>
+                     地点1: (35.4768546, 135.3688144)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_b6f35d4c21d7fd6c775e3031239406e5 = L.marker(
+                [35.4811938, 135.4349652],
+                {
+}
+            ).addTo(map_62efa9ba6d88556e51e9798722255699);
+        
+    
+            marker_b6f35d4c21d7fd6c775e3031239406e5.bindTooltip(
+                `<div>
+                     地点2: (35.4811938, 135.4349652)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_89397ade4f08f672bf7445ea2be4979f = L.marker(
+                [35.4724086, 135.3666782],
+                {
+}
+            ).addTo(map_62efa9ba6d88556e51e9798722255699);
+        
+    
+            marker_89397ade4f08f672bf7445ea2be4979f.bindTooltip(
+                `<div>
+                     地点3: (35.4724086, 135.3666782)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_3507042a5fd5cb19ebf695cff473bf6a = L.marker(
+                [35.4631923, 135.4027223],
+                {
+}
+            ).addTo(map_62efa9ba6d88556e51e9798722255699);
+        
+    
+            marker_3507042a5fd5cb19ebf695cff473bf6a.bindTooltip(
+                `<div>
+                     地点4: (35.4631923, 135.4027223)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_45117860fe83eab0a4e64ca278f5ea70 = L.marker(
+                [35.4767771, 135.393619],
+                {
+}
+            ).addTo(map_62efa9ba6d88556e51e9798722255699);
+        
+    
+            marker_45117860fe83eab0a4e64ca278f5ea70.bindTooltip(
+                `<div>
+                     地点5: (35.4767771, 135.393619)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_85632d55d41c07db1887e3a9cb66cec0 = L.marker(
+                [35.4805365, 135.4272502],
+                {
+}
+            ).addTo(map_62efa9ba6d88556e51e9798722255699);
+        
+    
+            marker_85632d55d41c07db1887e3a9cb66cec0.bindTooltip(
+                `<div>
+                     地点6: (35.4805365, 135.4272502)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_a76bc8c41f0c49b15aa2b3897e3656d2 = L.marker(
+                [35.4671336, 135.397094],
+                {
+}
+            ).addTo(map_62efa9ba6d88556e51e9798722255699);
+        
+    
+            marker_a76bc8c41f0c49b15aa2b3897e3656d2.bindTooltip(
+                `<div>
+                     地点7: (35.4671336, 135.397094)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_a5bfefa71ddec12e6b736f40aa248c39 = L.marker(
+                [35.4686324, 135.3948061],
+                {
+}
+            ).addTo(map_62efa9ba6d88556e51e9798722255699);
+        
+    
+            marker_a5bfefa71ddec12e6b736f40aa248c39.bindTooltip(
+                `<div>
+                     地点8: (35.4686324, 135.3948061)
                  </div>`,
                 {
   "sticky": true,

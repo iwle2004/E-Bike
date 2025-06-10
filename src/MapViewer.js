@@ -2,25 +2,31 @@ import React, { useState } from "react";
 
 const MapViewer = () => {
   const [mapUrl, setMapUrl] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleRunNavigation = async () => {
+    setLoading(true);
     try {
       const res = await fetch("http://localhost:5000/run-navigation");
       const json = await res.json();
       if (json.status === "success") {
         setMapUrl("http://localhost:5000/get-map");
       } else {
-        alert("ナビゲーション実行に失敗しました");
+        alert(`ナビゲーション実行に失敗しました: ${json.message || "不明なエラー"}`);
       }
     } catch (error) {
       console.error(error);
       alert("通信エラーが発生しました");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div>
-      <button onClick={handleRunNavigation}>ナビゲーション実行</button>
+      <button onClick={handleRunNavigation} disabled={loading}>
+        {loading ? "実行中..." : "ナビゲーション実行"}
+      </button>
       {mapUrl && (
         <iframe
           title="TSP Map"
