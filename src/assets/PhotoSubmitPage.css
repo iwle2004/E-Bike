@@ -1,0 +1,32 @@
+.photo-submit-container {
+    max-width: 400px;
+    margin: 3rem auto;
+    padding: 1rem 1.5rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(23, 105, 170, 0.1);
+    text-align: center;
+  }
+  .photo-submit-title {
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: #1769aa;
+  }
+  .photo-input {
+    margin-bottom: 1.2rem;
+    font-size: 1rem;
+  }
+  .photo-button {
+    padding: 0.6rem 1.2rem;
+    background-color: #1769aa;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .photo-button:hover {
+    background-color: #0f4d75;
+  }
