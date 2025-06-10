@@ -10,10 +10,10 @@ import sys
 Serch_Box = "35.44880977985438, 135.35154309496215,35.498076744854764, 135.44095761784553"  # 南緯,西経,北緯,東経
 
 # 検索する店舗の検索に必要なタグ(amenityかshop)
-Serch_key = "shop"
+Serch_key = "historic"
 
 # 検索する店舗の種類
-Serch_type = "=convenience"
+Serch_type = "=monument"
 
 # 名前で店舗を検索(検索しない場合は空白)
 Serch_name = ""
@@ -75,9 +75,12 @@ if not points:
 client = openrouteservice.Client(
     key="5b3ce3597851110001cf6248b9ea1dfdfdb7416eb962ef2ad2bd129e"
 )
+# === 初期地点を設定 ===
+start_point = (35.46872450002604, 135.39500977773056)  # 東舞鶴駅 (lat, lon)
 
-# ORS形式の座標 (lon, lat)
-coords = [tuple(reversed(p)) for p in points]
+# === ORS形式に整形（lon, lat）===
+coords = [tuple(reversed(start_point))]  # (lon, lat)
+coords.extend([tuple(reversed(p)) for p in points])
 
 # 距離行列を取得
 try:
@@ -131,6 +134,6 @@ m = folium.Map(location=(mean_lat, mean_lon), zoom_start=15)
 for i, p in enumerate(points):
     folium.Marker(p, tooltip=f"地点{i}: {p}").add_to(m)
 folium.PolyLine(route_coords, color="green", weight=4, tooltip="最短徒歩ルート").add_to(m)
-m.save("maizuru_full_tsp_route.html")
+m.save("backend\maizuru_full_tsp_route.html")
 
 print("✅ 東舞鶴ナビ作成完了: maizuru_full_tsp_route.html")
