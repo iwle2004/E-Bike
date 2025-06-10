@@ -1,0 +1,41 @@
+/* src/react/NotFound.css */
+.not-found-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+  padding: 0 20px; /* モバイルデバイス用のパディング */
+}
+
+.not-found-title {
+  font-size: 6rem;
+  margin-bottom: 16px;
+}
+
+.not-found-subtitle {
+  font-size: 1.5rem;
+  margin-bottom: 32px;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+  .not-found-title {
+      font-size: 4rem; /* タイトルサイズを小さくする */
+  }
+  
+  .not-found-subtitle {
+      font-size: 1.2rem; /* サブタイトルサイズを小さくする */
+  }
+}
+
+@media (max-width: 480px) {
+  .not-found-title {
+      font-size: 2.5rem; /* タイトルサイズをさらに小さくする */
+  }
+  
+  .not-found-subtitle {
+      font-size: 1rem; /* サブタイトルサイズをさらに小さくする */
+  }
+}
