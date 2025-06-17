@@ -6,6 +6,7 @@ function App() {
 
   const runNavigation = async (tags) => {
     try {
+      
       const res = await fetch("http://localhost:5000/run-navigation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
