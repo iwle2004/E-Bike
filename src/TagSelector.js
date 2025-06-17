@@ -27,6 +27,7 @@ const tagGroups = {
 
 const TagSelector = ({ onRunNavigation }) => {
   const [selectedTags, setSelectedTags] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (tagStr) => {
     setSelectedTags((prev) =>
@@ -34,12 +35,17 @@ const TagSelector = ({ onRunNavigation }) => {
     );
   };
 
-  const handleSubmit = () => {
-    onRunNavigation(selectedTags);
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      await onRunNavigation(selectedTags);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div>
+    <div style={{ padding: "2rem" }}>
       <h2>行きたい場所を選んでください</h2>
       {Object.entries(tagGroups).map(([group, tags]) => (
         <fieldset key={group}>
@@ -52,6 +58,7 @@ const TagSelector = ({ onRunNavigation }) => {
                   type="checkbox"
                   checked={selectedTags.includes(tagStr)}
                   onChange={() => handleChange(tagStr)}
+                  disabled={loading}
                 />
                 {label}
               </label>
@@ -59,7 +66,31 @@ const TagSelector = ({ onRunNavigation }) => {
           })}
         </fieldset>
       ))}
-      <button onClick={handleSubmit}>ナビを開始する</button>
+
+      <button onClick={handleSubmit} disabled={loading}>
+        {loading ? 'ナビ生成中...' : 'ナビを開始する'}
+      </button>
+
+      {/* スピナー表示 */}
+      {loading && <div className="spinner" />}
+
+      {/* スピナー用アニメーション CSS */}
+      <style>{`
+        .spinner {
+          width: 40px;
+          height: 40px;
+          border: 5px solid #ccc;
+          border-top: 5px solid #3498db;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          margin: 1rem auto;
+        }
+
+        @keyframes spin {
+          0%   { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 };

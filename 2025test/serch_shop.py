@@ -17,7 +17,7 @@ Serch_name = ""
 if Serch_name:
     query = f"""
     [out:json];
-    node[{Serch_key} {Serch_type}]["name" ~ {Serch_name}]({Serch_Box});
+    node[{Serch_key} {Serch_type}]["name" ~ {Serch_name}](around:{Serch_Box});
     out body;
     """
 else:

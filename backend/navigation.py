@@ -35,11 +35,21 @@ if not tags_list:
 # 今は最初のタグだけ使う（複数対応は今後拡張可能）
 key, value = tags_list[0]
 
-search_box = "35.44880977985438, 135.35154309496215,35.498076744854764, 135.44095761784553"
+# 東舞鶴駅を起点に設定
+start_point = (35.46872450002604, 135.39500977773056) #東舞鶴駅
+end_point =(35.474763476187924, 135.38536802589823)#赤レンガパーク
+
+serch_range = 300 #検索する円の半径
+Xs, Ys = start_point #start_pointを緯度,経度に分割
+Xe, Ye = end_point #end_pointを緯度,経度に分割
+
+# start_pointとend_pointを結ぶ直線を2分割する座標
+mid_x = (Xs + Xe) / 2
+mid_y = (Ys + Ye) / 2
 
 query = f"""
 [out:json];
-node[{key}={value}]({search_box});
+node[{key}="{value}"](around:{serch_range},{mid_x},{mid_y});
 out body;
 """
 
@@ -65,10 +75,6 @@ for element in data["elements"]:
     name = element.get("tags", {}).get("name", "(名前なし)")
     print(f"{name}: {lat}, {lon}")
     points.append((lat, lon))
-
-# 東舞鶴駅を起点に設定
-start_point = (35.46872450002604, 135.39500977773056) #東舞鶴駅
-end_point =(35.474763476187924, 135.38536802589823)#赤レンガパーク
 
 # OpenRouteServiceクライアント初期化（APIキーをあなたのものに置き換えてください）
 client = openrouteservice.Client(key="5b3ce3597851110001cf6248b9ea1dfdfdb7416eb962ef2ad2bd129e")
