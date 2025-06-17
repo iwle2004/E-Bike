@@ -67,14 +67,17 @@ for element in data["elements"]:
     points.append((lat, lon))
 
 # 東舞鶴駅を起点に設定
-start_point = (35.46872450002604, 135.39500977773056)
+start_point = (35.46872450002604, 135.39500977773056) #東舞鶴駅
+end_point =(35.474763476187924, 135.38536802589823)#赤レンガパーク
 
 # OpenRouteServiceクライアント初期化（APIキーをあなたのものに置き換えてください）
-client = openrouteservice.Client(key="あなたのAPIキー")
+client = openrouteservice.Client(key="5b3ce3597851110001cf6248b9ea1dfdfdb7416eb962ef2ad2bd129e")
 
 # 経路計算用座標リスト（lon, latの順）
 coords = [tuple(reversed(start_point))]
-coords.extend([tuple(reversed(p)) for p in points])
+coords.extend([tuple(reversed(p)) for p in points])  # 中間地点
+coords.append(tuple(reversed(end_point)))  # 最終目的地（赤レンガパーク）
+
 
 route_coords = []
 
@@ -95,6 +98,7 @@ m = folium.Map(location=(mean_lat, mean_lon), zoom_start=15)
 
 # 出発点マーカー
 folium.Marker(start_point, tooltip="出発点（東舞鶴駅）", icon=folium.Icon(color="red")).add_to(m)
+folium.Marker(end_point, tooltip="目的地（赤レンガパーク）", icon=folium.Icon(color="green")).add_to(m)
 
 # 目的地マーカー
 for i, p in enumerate(points):
