@@ -115,6 +115,17 @@ if route_coords:
     route_latlon = [(lat, lon) for lon, lat in route_coords]
     folium.PolyLine(route_latlon, color="blue", weight=4, opacity=0.7).add_to(m)
 
+# 検索範囲の円を描画
+folium.Circle(
+    location=(mid_x,mid_y),
+    radius=serch_range,  # 単位はメートル
+    color="blue",
+    opacity=0.5,
+    fill=True,
+    fill_color="blue",
+    fill_opacity=0.1,
+).add_to(m)
+
 # 保存先のパス（適宜変更してください）
 m.save("backend/maizuru_full_tsp_route.html")
 
