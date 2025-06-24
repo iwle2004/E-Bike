@@ -30,4 +30,4 @@ for marker_id in range(num_markers):
     x_start = col * (size + offset) + x_offset
     img[y_start:y_start + ar_img.shape[0], x_start:x_start + ar_img.shape[1]] = ar_img
 # 画像保存
-cv2.imwrite("markers_2.png",img)
+cv2.imwrite("markers_AA.png",img)
