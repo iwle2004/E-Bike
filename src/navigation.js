@@ -1,5 +1,8 @@
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import './MapPage.css'
 import React, { useState } from "react";
-import TagSelector from "./TagSelector";
+import TagSelector from "./assets/TagSelector";
 
 function App() {
   const [mapUrl, setMapUrl] = useState(null);
