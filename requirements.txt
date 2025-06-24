@@ -1,0 +1,6 @@
+Flask
+Flask-Cors
+waitress
+requests
+openrouteservice
+folium

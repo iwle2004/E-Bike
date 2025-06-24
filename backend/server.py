@@ -6,7 +6,7 @@ import os
 import json
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["http://localhost:3000"])
 
 @app.route("/run-navigation", methods=["POST"])
 def run_navigation():
@@ -30,6 +30,6 @@ def run_navigation():
         return jsonify({"status": "error"}), 500
 
 if __name__ == "__main__":
-    # Use port from environment or default to 5000
-    port = int(os.environ.get("PORT", 5001))
-    serve(app, host="0.0.0.0", port=port)
+    # Use port from environment or default to 5000ß
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=5000)
