@@ -14,12 +14,9 @@ def run_navigation():
         nav_path = os.path.join(base_dir, "navigation.py")
 
         tags = request.json.get("tags", [])
-        # tagsが文字列のJSON配列だったらパースする
         if isinstance(tags, str):
             tags = json.loads(tags)
 
-        # tagsが ["key=value", ...] 形式のリストならそのまま、
-        # もし {"key": ..., "value": ...} の辞書なら key=value形式に変換
         if tags and isinstance(tags[0], dict):
             tag_str = ",".join(f"{t['key']}={t['value']}" for t in tags)
         else:
@@ -28,7 +25,6 @@ def run_navigation():
         print("Received tags:", tags)
         print("Constructed tag string:", tag_str)
 
-        # navigation.pyを引数付きで実行
         subprocess.run(["python", nav_path, "--tags", tag_str], check=True)
 
         return jsonify({"status": "success"})
@@ -42,4 +38,6 @@ def get_map():
     return send_file(html_path)
 
 if __name__ == "__main__":
-    app.run(port=5000, debug=True)
+    # ✅ Render用に0.0.0.0にしておく
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
