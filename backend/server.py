@@ -1,13 +1,11 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from waitress import serve
 import subprocess
 import os
 import json
 
 app = Flask(__name__)
 CORS(app, origins=["https://e-bike-dun.vercel.app"])
-# CORS(app, origins=["http://localhost:3000/map"])
 
 @app.route("/run-navigation", methods=["POST"])
 def run_navigation():
@@ -30,8 +28,4 @@ def run_navigation():
         print("Navigation failed:", e)
         return jsonify({"status": "error"}), 500
 
-if __name__ == "__main__":
-    import os
-    from waitress import serve
-    port = int(os.environ.get("PORT", 8000))
-    serve(app, host="0.0.0.0", port=port)
+app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
