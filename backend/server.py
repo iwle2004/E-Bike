@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import subprocess
 import os
@@ -16,11 +16,18 @@ def run_navigation():
         tags = request.json.get("tags", [])
         if isinstance(tags, str):
             tags = json.loads(tags)
+
+        # tagsが ["key=value", ...] 形式のリストならそのまま、
+        # もし {"key": ..., "value": ...} の辞書なら key=value形式に変換
         if tags and isinstance(tags[0], dict):
             tag_str = ",".join(f"{t['key']}={t['value']}" for t in tags)
         else:
             tag_str = ",".join(tags)
 
+        print("Received tags:", tags)
+        print("Constructed tag string:", tag_str)
+
+        # navigation.pyを引数付きで実行
         subprocess.run(["python", nav_path, "--tags", tag_str], check=True)
 
         return jsonify({"status": "success"})
