@@ -9,7 +9,7 @@ function MapPage() {
 
   const runNavigation = async (tags) => {
     try {
-      const res = await fetch("http://localhost:8000/run-navigation", {
+      const res = await fetch("https://e-bike-vjxt.onrender.com/run-navigation", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ tags }),
@@ -17,7 +17,7 @@ function MapPage() {
 
       const json = await res.json();
       if (json.status === "success") {
-        setMapUrl("http://localhost:8000/get-map");
+        setMapUrl("https://e-bike-vjxt.onrender.com/get-map");
       } else {
         alert("ナビ生成に失敗しました");
       }
