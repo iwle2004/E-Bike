@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_dd9c5197a3574fa43207888044c840c1 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_dd9c5197a3574fa43207888044c840c1" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_dd9c5197a3574fa43207888044c840c1 = L.map(
+                "map_dd9c5197a3574fa43207888044c840c1",
+                {
+                    center: [35.47677455, 135.3896481],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 15,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_0ed1ed0eff6fdd82f067a73732346b96 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_0ed1ed0eff6fdd82f067a73732346b96.addTo(map_dd9c5197a3574fa43207888044c840c1);
+        
+    
+            var marker_ea52597dd10edf66acb38ef9acdc6299 = L.marker(
+                [35.46872450002604, 135.39500977773056],
+                {
+}
+            ).addTo(map_dd9c5197a3574fa43207888044c840c1);
+        
+    
+            var icon_935baf9d2e7184406f1c8ee2196d8bea = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+            marker_ea52597dd10edf66acb38ef9acdc6299.bindTooltip(
+                `<div>
+                     出発点（東舞鶴駅）
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_ea52597dd10edf66acb38ef9acdc6299.setIcon(icon_935baf9d2e7184406f1c8ee2196d8bea);
+            
+    
+            var marker_025970e1d10d9c163ba9f5be083c17ee = L.marker(
+                [35.474763476187924, 135.38536802589823],
+                {
+}
+            ).addTo(map_dd9c5197a3574fa43207888044c840c1);
+        
+    
+            var icon_16b82bb0f2bbf30ab1969b10545b8cc1 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+            marker_025970e1d10d9c163ba9f5be083c17ee.bindTooltip(
+                `<div>
+                     目的地（赤レンガパーク）
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_025970e1d10d9c163ba9f5be083c17ee.setIcon(icon_16b82bb0f2bbf30ab1969b10545b8cc1);
+            
+    
+            var marker_540d5374ac6a46542c76310bfd9fe3f5 = L.marker(
+                [35.4785513, 135.3913081],
+                {
+}
+            ).addTo(map_dd9c5197a3574fa43207888044c840c1);
+        
+    
+            marker_540d5374ac6a46542c76310bfd9fe3f5.bindTooltip(
+                `<div>
+                     地点0: (35.4785513, 135.3913081)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_cc7a6f5f1c5018737408f94cbf021538 = L.marker(
+                [35.4749978, 135.3879881],
+                {
+}
+            ).addTo(map_dd9c5197a3574fa43207888044c840c1);
+        
+    
+            marker_cc7a6f5f1c5018737408f94cbf021538.bindTooltip(
+                `<div>
+                     地点1: (35.4749978, 135.3879881)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_df00166b023f817baeaab2f6cba823a9 = L.polyline(
+                [[35.46868, 135.39507], [35.46868, 135.39507], [35.46852, 135.39491], [35.46867, 135.3947], [35.46881, 135.39486], [35.46959, 135.39458], [35.46957, 135.39451], [35.46968, 135.3944], [35.46978, 135.39436], [35.46976, 135.39428], [35.47056, 135.39399], [35.47064, 135.39396], [35.47071, 135.39394], [35.47149, 135.39366], [35.47158, 135.39363], [35.47168, 135.39359], [35.47245, 135.39332], [35.47249, 135.39331], [35.47253, 135.39329], [35.47261, 135.39327], [35.47264, 135.39325], [35.47338, 135.39299], [35.47347, 135.39296], [35.47357, 135.39293], [35.47432, 135.39267], [35.47435, 135.39264], [35.47442, 135.39262], [35.47448, 135.3926], [35.47528, 135.39233], [35.47536, 135.3923], [35.47543, 135.39227], [35.4758, 135.39214], [35.47618, 135.39201], [35.47638, 135.39194], [35.47643, 135.39192], [35.47648, 135.39182], [35.47653, 135.39179], [35.4766, 135.39177], [35.47663, 135.39189], [35.47684, 135.39183], [35.47686, 135.39182], [35.47691, 135.3918], [35.47693, 135.39179], [35.47801, 135.39143], [35.47819, 135.39136], [35.47833, 135.39132], [35.47834, 135.39137], [35.47834, 135.39137], [35.47833, 135.39132], [35.47819, 135.39136], [35.47801, 135.39143], [35.47693, 135.39179], [35.47691, 135.3918], [35.47686, 135.39182], [35.47684, 135.39183], [35.47663, 135.39189], [35.4766, 135.39177], [35.47647, 135.39122], [35.47633, 135.39074], [35.47605, 135.39027], [35.47601, 135.39015], [35.47593, 135.39016], [35.47589, 135.39004], [35.47587, 135.38995], [35.47588, 135.38967], [35.47592, 135.38937], [35.47545, 135.38932], [35.47502, 135.38896], [35.4748, 135.3888], [35.47445, 135.38862], [35.47456, 135.38854], [35.47473, 135.38852], [35.47472, 135.38839], [35.4747, 135.38835], [35.47462, 135.38828], [35.47433, 135.38814], [35.47429, 135.38809], [35.47424, 135.38796], [35.47449, 135.38793], [35.47483, 135.38795], [35.47501, 135.38803], [35.47502, 135.388], [35.47502, 135.388], [35.47507, 135.38788], [35.47473, 135.3875], [35.47465, 135.38744], [35.47457, 135.38743], [35.47451, 135.38745], [35.47425, 135.38764], [35.47418, 135.38766], [35.47412, 135.38765], [35.4741, 135.38762], [35.47397, 135.3874], [35.47392, 135.38734], [35.47385, 135.38729], [35.47378, 135.38728], [35.47354, 135.38729], [35.4735, 135.38727], [35.47337, 135.3871], [35.47379, 135.38675], [35.47403, 135.38651], [35.47416, 135.38663], [35.47433, 135.38674], [35.47466, 135.38682], [35.47504, 135.38701], [35.47515, 135.38675], [35.47512, 135.38613], [35.47532, 135.38567], [35.47502, 135.38549], [35.47478, 135.38534]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.7, "smoothFactor": 1.0, "stroke": true, "weight": 4}
+            ).addTo(map_dd9c5197a3574fa43207888044c840c1);
+        
+</script>
+</html>
