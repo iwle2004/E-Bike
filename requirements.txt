@@ -1,4 +1,5 @@
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 Flask
 Flask-Cors
 waitress
@@ -6,6 +7,8 @@ requests
 openrouteservice
 folium
 =======
+=======
+>>>>>>> Stashed changes
 blinker==1.9.0
 branca==0.8.1
 certifi==2025.6.15
@@ -25,5 +28,9 @@ requests==2.32.4
 urllib3==2.5.0
 waitress==3.0.2
 Werkzeug==3.1.3
+<<<<<<< Updated upstream
+xyzservices==2025.4.0
+>>>>>>> Stashed changes
+=======
 xyzservices==2025.4.0
 >>>>>>> Stashed changes
