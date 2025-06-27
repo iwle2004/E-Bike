@@ -7,7 +7,12 @@ import json
 
 app = Flask(__name__)
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 CORS(app, origins=["http://localhost:3000"])
+=======
+CORS(app, origins=["https://e-bike-dun.vercel.app"])
+# CORS(app, origins=["http://localhost:3000/map"])
+>>>>>>> Stashed changes
 =======
 CORS(app, origins=["https://e-bike-dun.vercel.app"])
 # CORS(app, origins=["http://localhost:3000/map"])
@@ -36,12 +41,18 @@ def run_navigation():
 
 if __name__ == "__main__":
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     # Use port from environment or default to 5000ß
     from waitress import serve
     serve(app, host="0.0.0.0", port=5000)
 =======
+=======
+>>>>>>> Stashed changes
     import os
     from waitress import serve
     port = int(os.environ.get("PORT", 8000))
     serve(app, host="0.0.0.0", port=port)
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
