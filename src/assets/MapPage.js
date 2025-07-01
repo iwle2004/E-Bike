@@ -1,6 +1,5 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import './MapPage.css';
+import '../MapPage.css';
 import React, { useState } from "react";
 import TagSelector from "./TagSelector";
 
@@ -8,16 +7,19 @@ function MapPage() {
   const [mapUrl, setMapUrl] = useState(null);
 
   const runNavigation = async (tags) => {
+    const apiUrl = process.env.REACT_APP_API_URL;
+    const baseUrl = apiUrl || "http://localhost:5000";
+
     try {
-      const res = await fetch("https://e-bike-vjxt.onrender.com/run-navigation", {
+      const res = await fetch(`${baseUrl}/run-navigation`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ tags }),
       });
-
       const json = await res.json();
-      if (json.status === "success") {
-        setMapUrl("https://e-bike-vjxt.onrender.com/get-map");
+      
+      if (json.status === "success" && json.filename) {
+        setMapUrl(`${baseUrl}/get-map/${json.filename}`);
       } else {
         alert("ナビ生成に失敗しました");
       }
