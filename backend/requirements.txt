@@ -1,3 +1,9 @@
 flask
 flask-cors
 waitress
+gunicorn
+# navigation.pyに必要なもの
+requests
+openrouteservice
+folium
+numpy
