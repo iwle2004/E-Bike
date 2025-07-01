@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css';
-import '../MapPage.css';
+import './MapPage.css';
 import React, { useState } from "react";
 import TagSelector from "./TagSelector";
 
