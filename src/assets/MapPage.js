@@ -1,21 +1,19 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import './MapPage.css'
+import './MapPage.css';
 import React, { useState } from "react";
-import TagSelector from "./assets/TagSelector";
+import TagSelector from "./TagSelector";
 
-function App() {
+function MapPage() {
   const [mapUrl, setMapUrl] = useState(null);
 
   const runNavigation = async (tags) => {
-    // 環境変数からバックエンドのURLを取得
+    // ▼▼▼▼▼ ここからが追加・修正する部分です ▼▼▼▼▼
     const apiUrl = process.env.REACT_APP_API_URL;
-
-    // もしapiUrlが未設定なら、ローカル用のURLを使う（開発時に便利）
     const baseUrl = apiUrl || "http://localhost:5000";
+    // ▲▲▲▲▲ ここまでが追加・修正する部分です ▲▲▲▲▲
 
     try {
-      // 🔽 変更点1
+      // 変更点1: `baseUrl` を使う
       const res = await fetch(`${baseUrl}/run-navigation`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -23,7 +21,7 @@ function App() {
       });
       const json = await res.json();
       if (json.status === "success") {
-        // 🔽 変更点2
+        // 変更点2: `baseUrl` を使う
         setMapUrl(`${baseUrl}/get-map`);
       } else {
         alert("ナビ生成に失敗しました");
@@ -34,20 +32,22 @@ function App() {
   };
 
   return (
-    <div>
-      <h1>東舞鶴観光ナビ</h1>
+    <div className="map-wrapper">
+      <h1 className="page-title">🌸 東舞鶴観光ナビ 🌊</h1>
       <TagSelector onRunNavigation={runNavigation} />
       {mapUrl && (
-        <iframe
-          title="マップ"
-          src={mapUrl}
-          width="100%"
-          height="600px"
-          style={{ marginTop: "20px", border: "none" }}
-        />
+        <div className="map-container">
+          <iframe
+            title="マップ"
+            src={mapUrl}
+            width="100%"
+            height="100%"
+            style={{ border: "none" }}
+          />
+        </div>
       )}
     </div>
   );
 }
 
-export default App;
+export default MapPage;
