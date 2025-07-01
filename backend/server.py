@@ -14,45 +14,36 @@ def run_navigation():
         nav_path = os.path.join(base_dir, "navigation.py")
 
         tags = request.json.get("tags", [])
-        # tagsが文字列のJSON配列だったらパースする
+        locations = request.json.get("locations")
+        print("受け取った locations:", locations)
+
         if isinstance(tags, str):
             tags = json.loads(tags)
 
-        # tagsが ["key=value", ...] 形式のリストならそのまま、
-        # もし {"key": ..., "value": ...} の辞書なら key=value形式に変換
         if tags and isinstance(tags[0], dict):
             tag_str = ",".join(f"{t['key']}={t['value']}" for t in tags)
         else:
             tag_str = ",".join(tags)
 
-        print("Received tags:", tags)
-        print("Constructed tag string:", tag_str)
+        print("📌 Received tags:", tag_str)
+        print("📌 Received locations:", locations)
 
-        # navigation.pyを引数付きで実行
-        subprocess.run(["python", nav_path, "--tags", tag_str], check=True)
+        subprocess.run([
+            "python", nav_path,
+            "--tags", tag_str,
+            "--locations", json.dumps(locations)
+        ], check=True)
 
         return jsonify({"status": "success"})
     except Exception as e:
-        print("❌ ナビゲーション失敗:", e)
-        return jsonify({"status": "error"})
+        #print("❌ ナビゲーション失敗:", e)
+        return jsonify({"status": "error", "message": str(e)})
+
 
 @app.route("/get-map", methods=["GET"])
 def get_map():
     html_path = os.path.join(os.path.dirname(__file__), "maizuru_full_tsp_route.html")
     return send_file(html_path)
-
-#チェックボックスで選択されたlocationを送信
-@app.route("/change-location", methods=["POST"])
-def change_location():
-    locations = request.json.get("locations", [])
-    # tagsが文字列のJSON配列だったらパースする
-    if isinstance(locaitons, str):
-            locaitons = json.loads(locaitons)
-    
-    return jsonify({
-        "start": {"lat": 35.47, "lon": 135.39}, #現在座標
-        "end": {"lat": 35.49, "lon": 135.41} #目的座標
-    })
 
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
