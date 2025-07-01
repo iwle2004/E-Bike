@@ -2,6 +2,23 @@ import React, { useState } from "react";
 import TagSelector from "./TagSelector";
 
 function App() {
+  const runLocation = async (locations) => {
+    try {
+      const res = await fetch("http://localhost:5000/change-location", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(locations),
+      });
+      const json = await res.json();
+      if (json.status === "success") {
+      } else {
+        alert("座標取得に失敗しました");
+      }
+    } catch {
+      alert("通信エラー");
+    }
+  };
+
   const [mapUrl, setMapUrl] = useState(null);
 
   const runNavigation = async (tags) => {
@@ -26,7 +43,10 @@ function App() {
   return (
     <div>
       <h1>東舞鶴観光ナビ</h1>
-      <TagSelector onRunNavigation={runNavigation} />
+      <TagSelector
+        onRunLocation={runLocation}
+        onRunNavigation={runNavigation}
+      />
       {mapUrl && (
         <iframe
           title="マップ"

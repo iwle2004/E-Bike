@@ -46,6 +46,25 @@ const TagSelector = ({ onRunNavigation }) => {
 
   return (
     <div style={{ padding: "2rem" }}>
+
+      <label key="現在座標" style={{ display: "block" }}>
+        <input
+          type="checkbox"
+          name="現在地"
+          value="yes"
+        />
+          現在地
+      </label>
+      
+      <label key="目的座標" style={{ display: "block" }}>
+        <input
+          type="checkbox"
+          name="目的地"
+          value="yes"
+        />
+          目的地
+      </label>
+
       <h2>行きたい場所を選んでください</h2>
       {Object.entries(tagGroups).map(([group, tags]) => (
         <fieldset key={group}>
