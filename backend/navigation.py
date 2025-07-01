@@ -11,6 +11,7 @@ import folium
 parser = argparse.ArgumentParser()
 parser.add_argument("--tags", type=str, default="")
 parser.add_argument("--output", type=str, required=True, help="出力するHTMLファイルパス")
+parser.add_argument("--currentLocation", type=str, required=True)
 args = parser.parse_args()
 
 tags_str = args.tags.strip()
@@ -65,7 +66,8 @@ for element in data["elements"]:
     print(f"{name}: {lat}, {lon}")
     points.append((lat, lon))
 
-start_point = (35.46872450002604, 135.39500977773056)
+start_Location = args.currentLocation
+start_point = (start_Location)
 end_point = (35.474763476187924, 135.38536802589823)
 
 client = openrouteservice.Client(key="5b3ce3597851110001cf6248b9ea1dfdfdb7416eb962ef2ad2bd129e")

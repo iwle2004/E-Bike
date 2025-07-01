@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>連続位置情報取得</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; text-align: center; }
+    button { margin: 0.5rem; padding: 0.5rem 1rem; font-size: 1rem; }
+    #output { margin-top: 1rem; font-size: 1.2rem; }
+  </style>
+</head>
+<body>
+  <h1>位置情報の連続取得</h1>
+  <button id="startBtn">開始</button>
+  <button id="stopBtn" disabled>停止</button>
+
+  <div id="output">
+    <p>緯度: <span id="latitude">---</span></p>
+    <p>経度: <span id="longitude">---</span></p>
+  </div>
+
+  <script>
+    let watchId = null;
+
+    document.getElementById('startBtn').onclick = () => {
+      if (!navigator.geolocation) {
+        alert('このブラウザは位置情報に対応していません。');
+        return;
+      }
+      watchId = navigator.geolocation.watchPosition(
+        position => {
+          const lat = position.coords.latitude.toFixed(6);
+          const lon = position.coords.longitude.toFixed(6);
+          document.getElementById('latitude').textContent = lat;
+          document.getElementById('longitude').textContent = lon;
+        },
+        error => {
+          alert('位置情報取得エラー: ' + error.message);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        }
+      );
+      document.getElementById('startBtn').disabled = true;
+      document.getElementById('stopBtn').disabled = false;
+    };
+
+    document.getElementById('stopBtn').onclick = () => {
+      if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+        watchId = null;
+      }
+      document.getElementById('startBtn').disabled = false;
+      document.getElementById('stopBtn').disabled = true;
+      document.getElementById('latitude').textContent = '---';
+      document.getElementById('longitude').textContent = '---';
+    };
+  </script>
+</body>
+</html>
