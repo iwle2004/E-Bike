@@ -41,6 +41,19 @@ def get_map():
     html_path = os.path.join(os.path.dirname(__file__), "maizuru_full_tsp_route.html")
     return send_file(html_path)
 
+#チェックボックスで選択されたlocationを送信
+@app.route("/change-location", methods=["POST"])
+def change_location():
+    locations = request.json.get("locations", [])
+    # tagsが文字列のJSON配列だったらパースする
+    if isinstance(locaitons, str):
+            locaitons = json.loads(locaitons)
+    
+    return jsonify({
+        "start": {"lat": 35.47, "lon": 135.39}, #現在座標
+        "end": {"lat": 35.49, "lon": 135.41} #目的座標
+    })
+
 if __name__ == "__main__":
     app.run(port=5000, debug=True)
     
