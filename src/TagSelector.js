@@ -26,6 +26,12 @@ const tagGroups = {
 };
 
 const TagSelector = ({ onRunNavigation }) => {
+  const [isChecked, setIsChecked] = useState(false);
+
+  const Change = async (e) => {
+    setIsChecked(e.target.checked);
+  };
+
   const [selectedTags, setSelectedTags] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -38,7 +44,11 @@ const TagSelector = ({ onRunNavigation }) => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      await onRunNavigation(selectedTags);
+      const end_location = isChecked
+      ? { lat: 35.47771217414483, lon: 135.40127540144186 }
+      : { lat: 35.474763476187924, lon: 135.38536802589823 };
+
+      await onRunNavigation(selectedTags, end_location);
     } finally {
       setLoading(false);
     }
@@ -50,17 +60,15 @@ const TagSelector = ({ onRunNavigation }) => {
       <label key="現在座標" style={{ display: "block" }}>
         <input
           type="checkbox"
-          name="現在地"
-          value="yes"
         />
-          現在地
+          現在地:GPS使用のため未完成
       </label>
       
       <label key="目的座標" style={{ display: "block" }}>
         <input
           type="checkbox"
-          name="目的地"
-          value="yes"
+          checked={isChecked}
+          onChange={Change}
         />
           目的地
       </label>

@@ -10,6 +10,7 @@ import folium
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--tags", type=str, default="")
+parser.add_argument("--locations", type=str, required=True)
 args = parser.parse_args()
 
 tags_str = args.tags.strip()
@@ -36,12 +37,16 @@ if not tags_list:
 key, value = tags_list[0]
 
 # 東舞鶴駅を起点に設定
+locations = json.loads(args.locations)
 start_point = (35.46872450002604, 135.39500977773056) #東舞鶴駅
-end_point = (35.474763476187924, 135.38536802589823)#赤レンガパーク
+end_point = (locations["lat"], locations["lon"])#赤レンガパーク
 
 serch_range = 700 #検索する円の半径
 Xs, Ys = start_point #start_pointを緯度,経度に分割
-Xe, Ye = end_point #end_pointを緯度,経度に分割
+#Xe, Ye = end_point #end_pointを緯度,経度に分割
+
+Xe = locations.get("lat")
+Ye = locations.get("lon")
 
 # start_pointとend_pointを結ぶ直線を2分割する座標
 mid_x = (Xs + Xe) / 2
