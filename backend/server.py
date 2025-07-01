@@ -5,7 +5,10 @@ import os
 import json
 
 app = Flask(__name__)
-CORS(app)
+
+# フロントエンドのURLを明示的に許可する設定
+frontend_url = "https://e-bike-frontend.onrender.com"
+CORS(app, resources={r"/*": {"origins": frontend_url}})
 
 @app.route("/run-navigation", methods=["POST"])
 def run_navigation():
