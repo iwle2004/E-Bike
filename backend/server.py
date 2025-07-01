@@ -5,7 +5,10 @@ import os
 import json
 
 app = Flask(__name__)
-CORS(app, origins=["https://e-bike-dun.vercel.app"])
+
+# フロントエンドのURLを明示的に許可する設定
+frontend_url = "https://e-bike-frontend.onrender.com"
+CORS(app, resources={r"/*": {"origins": frontend_url}})
 
 @app.route("/run-navigation", methods=["POST"])
 def run_navigation():
@@ -17,8 +20,6 @@ def run_navigation():
         if isinstance(tags, str):
             tags = json.loads(tags)
 
-        # tagsが ["key=value", ...] 形式のリストならそのまま、
-        # もし {"key": ..., "value": ...} の辞書なら key=value形式に変換
         if tags and isinstance(tags[0], dict):
             tag_str = ",".join(f"{t['key']}={t['value']}" for t in tags)
         else:
@@ -27,12 +28,19 @@ def run_navigation():
         print("Received tags:", tags)
         print("Constructed tag string:", tag_str)
 
-        # navigation.pyを引数付きで実行
         subprocess.run(["python", nav_path, "--tags", tag_str], check=True)
 
         return jsonify({"status": "success"})
     except Exception as e:
-        print("Navigation failed:", e)
-        return jsonify({"status": "error"}), 500
+        print("❌ ナビゲーション失敗:", e)
+        return jsonify({"status": "error"})
 
-app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
+@app.route("/get-map", methods=["GET"])
+def get_map():
+    html_path = os.path.join(os.path.dirname(__file__), "maizuru_full_tsp_route.html")
+    return send_file(html_path)
+
+if __name__ == "__main__":
+    # ✅ Render用に0.0.0.0にしておく
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
