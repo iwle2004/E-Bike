@@ -1,22 +1,23 @@
 import argparse
 import json
 import os
-import sys
 import requests
+import sys
+from itertools import permutations
 import openrouteservice
 from openrouteservice import convert
 import folium
 
-# ---- 1. Parse args ----
 parser = argparse.ArgumentParser()
 parser.add_argument("--tags", type=str, default="")
+parser.add_argument("--output", type=str, required=True, help="出力するHTMLファイルパス")
 args = parser.parse_args()
 
 tags_str = args.tags.strip()
 print("Selected tags string:", tags_str)
 
 if not tags_str:
-    print("No tags given. Exiting.")
+    print("タグが選択されていません。終了します。")
     sys.exit(0)
 
 tags_list = []
@@ -25,13 +26,14 @@ for t in tags_str.split(","):
         key, value = t.split("=", 1)
         tags_list.append((key.strip(), value.strip()))
 
+print("Parsed tags:", tags_list)
+
 if not tags_list:
-    print("Tags format invalid. Exiting.")
+    print("タグが正しく解析できません。終了します。")
     sys.exit(0)
 
 key, value = tags_list[0]
 
-# ---- 2. Query Overpass ----
 search_box = "35.44880977985438, 135.35154309496215,35.498076744854764, 135.44095761784553"
 
 query = f"""
@@ -40,21 +42,29 @@ node[{key}={value}]({search_box});
 out body;
 """
 
+url = "http://overpass-api.de/api/interpreter"
+
 try:
-    response = requests.post("http://overpass-api.de/api/interpreter", data={"data": query}, timeout=30)
+    response = requests.post(url, data={"data": query}, timeout=30)
     response.raise_for_status()
 except requests.RequestException as e:
-    print("Overpass API error:", e)
+    print("Overpass APIリクエスト失敗:", e)
     sys.exit(1)
 
 data = response.json()
-if "elements" not in data or not data["elements"]:
-    print("No matching points found.")
+
+if "elements" not in data or len(data["elements"]) == 0:
+    print("該当する地点が見つかりませんでした。")
     sys.exit(0)
 
-points = [(el["lat"], el["lon"]) for el in data["elements"]]
+points = []
+for element in data["elements"]:
+    lat = element["lat"]
+    lon = element["lon"]
+    name = element.get("tags", {}).get("name", "(名前なし)")
+    print(f"{name}: {lat}, {lon}")
+    points.append((lat, lon))
 
-# ---- 3. Routing ----
 start_point = (35.46872450002604, 135.39500977773056)
 end_point = (35.474763476187924, 135.38536802589823)
 
@@ -65,6 +75,7 @@ coords.extend([tuple(reversed(p)) for p in points])
 coords.append(tuple(reversed(end_point)))
 
 route_coords = []
+
 for i in range(len(coords) - 1):
     try:
         routes = client.directions([coords[i], coords[i+1]], profile='foot-walking')
@@ -72,29 +83,26 @@ for i in range(len(coords) - 1):
         decoded = convert.decode_polyline(geometry)
         route_coords.extend(decoded['coordinates'])
     except Exception as e:
-        print("Routing failed:", e)
+        print(f"ルート取得失敗: {coords[i]} → {coords[i+1]}:", e)
 
-# ---- 4. Generate map ----
-mean_lat = sum(p[0] for p in points) / len(points)
-mean_lon = sum(p[1] for p in points) / len(points)
+if not points:
+    mean_lat, mean_lon = start_point
+else:
+    mean_lat = sum(p[0] for p in points) / len(points)
+    mean_lon = sum(p[1] for p in points) / len(points)
 
 m = folium.Map(location=(mean_lat, mean_lon), zoom_start=15)
 
-folium.Marker(start_point, tooltip="Start (Higashi Maizuru Station)", icon=folium.Icon(color="red")).add_to(m)
-folium.Marker(end_point, tooltip="Goal (Red Brick Park)", icon=folium.Icon(color="green")).add_to(m)
+folium.Marker(start_point, tooltip="出発点（東舞鶴駅）", icon=folium.Icon(color="red")).add_to(m)
+folium.Marker(end_point, tooltip="目的地（赤レンガパーク）", icon=folium.Icon(color="green")).add_to(m)
 
 for i, p in enumerate(points):
-    folium.Marker(p, tooltip=f"Point {i}: {p}").add_to(m)
+    folium.Marker(p, tooltip=f"地点{i}: {p}").add_to(m)
 
 if route_coords:
     route_latlon = [(lat, lon) for lon, lat in route_coords]
     folium.PolyLine(route_latlon, color="blue", weight=4, opacity=0.7).add_to(m)
 
-# ---- 5. Save to public/maps ----
-output_dir = os.path.join(os.path.dirname(__file__), "../public/maps")
-os.makedirs(output_dir, exist_ok=True)
-
-output_path = os.path.join(output_dir, "maizuru_full_tsp_route.html")
+output_path = args.output
 m.save(output_path)
-
-print("Map generated at:", output_path)
+print(f"地図作成完了: {output_path}")
