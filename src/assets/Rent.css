@@ -30,41 +30,22 @@
   .photo-button:hover {
     background-color: #0f4d75;
   }
-  .photo-preview {
-    width: 400px;
-    height: auto;
-    margin-top: 10px;
-    border: 1px solid #ccc;
+  .example-box {
+    border: 2px dashed #aaa;
+    padding: 10px;
+    margin: 15px 0;
+    text-align: center;
     border-radius: 8px;
-}
-.preview-container {
-    margin-top: 10px;
-}
-.example-box {
-  margin-top: 20px;
-  text-align: center;
-  background-color: #f5f5f5;
-  padding: 10px;
-  border-radius: 8px;
+    background-color: #f9f9f9;
 }
 
 .example-title {
-  font-weight: bold;
-  margin-bottom: 8px;
-  color: #333;
-}
-
-.example-images-container {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  flex-wrap: wrap;
+    font-weight: bold;
+    margin-bottom: 8px;
 }
 
 .example-image {
-  width: 300px;
-  height: auto;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  object-fit: cover;
+    max-width:300px;
+    height: auto;
+    border-radius: 4px;
 }
