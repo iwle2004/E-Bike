@@ -34,7 +34,6 @@ function App() {
         body: JSON.stringify({ tags, currentLocation }), // ✅ 位置情報も一緒に送信可能
       });
       const json = await res.json();
-      alert("currentLocation");
       if (json.status === "success") {
         setMapUrl(`${baseUrl}/get-map`);
       } else {
