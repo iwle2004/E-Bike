@@ -39,7 +39,7 @@ def run_navigation():
 
     except Exception as e:
         print("❌ ナビゲーション失敗:", e)
-        return jsonify({"status": "error"})
+        return jsonify(status="error", message=str(e)), 500
 
 @app.route("/get-map/<string:filename>")
 def get_map(filename):
