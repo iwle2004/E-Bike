@@ -6,7 +6,7 @@ import json
 import time
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["https://e-bike-backendd.onrender.com"], supports_credentials=True)
 
 @app.route("/run-navigation", methods=["POST"])
 def run_navigation():
