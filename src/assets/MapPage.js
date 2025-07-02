@@ -42,7 +42,7 @@ function MapPage() {
       if (json.status === "success" && json.filename) {
         setMapUrl(`${baseUrl}/get-map/${json.filename}`);
       } else {
-        alert("ナビ生成に失敗しました");
+        alert("ナビ生成に失敗しました: " + (json.message || ""));
       }
     } catch (err) {
       console.error("通信エラー:", err);
