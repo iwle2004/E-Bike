@@ -23,7 +23,7 @@ function App() {
     }
   }, []);
 
-  const runNavigation = async (tags) => {
+  const runNavigation = async (tags, currentLocation) => {
     const apiUrl = process.env.REACT_APP_API_URL;
     const baseUrl = apiUrl || "http://localhost:5000";
 
