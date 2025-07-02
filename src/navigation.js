@@ -37,7 +37,7 @@ function App() {
       if (json.status === "success") {
         setMapUrl(`${baseUrl}/get-map`);
       } else {
-        alert("ナビ生成に失敗しました");
+        alert("ナビ生成に失敗しましたnav: " + (json.message || ""));
       }
     } catch {
       alert("通信エラーが発生しました");
