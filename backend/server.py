@@ -3,36 +3,52 @@ from flask_cors import CORS
 import subprocess
 import os
 import json
+import time
 
 app = Flask(__name__)
-CORS(app, origins=["https://e-bike-dun.vercel.app"])
+CORS(app)
 
 @app.route("/run-navigation", methods=["POST"])
 def run_navigation():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
         nav_path = os.path.join(base_dir, "navigation.py")
+        
+        unique_filename = f"map_{int(time.time())}.html"
+        output_filepath = os.path.join(base_dir, unique_filename)
 
         tags = request.json.get("tags", [])
         if isinstance(tags, str):
             tags = json.loads(tags)
 
-        # tagsが ["key=value", ...] 形式のリストならそのまま、
-        # もし {"key": ..., "value": ...} の辞書なら key=value形式に変換
         if tags and isinstance(tags[0], dict):
             tag_str = ",".join(f"{t['key']}={t['value']}" for t in tags)
         else:
             tag_str = ",".join(tags)
 
-        print("Received tags:", tags)
-        print("Constructed tag string:", tag_str)
+        subprocess.run(
+            ["python", nav_path, "--tags", tag_str, "--output", output_filepath], 
+            check=True
+        )
 
-        # navigation.pyを引数付きで実行
-        subprocess.run(["python", nav_path, "--tags", tag_str], check=True)
+        return jsonify({"status": "success", "filename": unique_filename})
 
-        return jsonify({"status": "success"})
     except Exception as e:
-        print("Navigation failed:", e)
-        return jsonify({"status": "error"}), 500
+        print("❌ ナビゲーション失敗:", e)
+        return jsonify({"status": "error"})
 
-app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8000)))
+@app.route("/get-map/<string:filename>")
+def get_map(filename):
+    if ".." in filename or filename.startswith("/"):
+        return "Invalid filename", 400
+    
+    html_path = os.path.join(os.path.dirname(__file__), filename)
+    
+    if not os.path.exists(html_path):
+        return "File not found", 404
+        
+    return send_file(html_path)
+
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)

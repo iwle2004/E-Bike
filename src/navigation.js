@@ -8,15 +8,23 @@ function App() {
   const [mapUrl, setMapUrl] = useState(null);
 
   const runNavigation = async (tags) => {
+    // 環境変数からバックエンドのURLを取得
+    const apiUrl = process.env.REACT_APP_API_URL;
+
+    // もしapiUrlが未設定なら、ローカル用のURLを使う（開発時に便利）
+    const baseUrl = apiUrl || "http://localhost:5000";
+
     try {
-      const res = await fetch("http://localhost:5000/run-navigation", {
+      // 🔽 変更点1
+      const res = await fetch(`${baseUrl}/run-navigation`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ tags }),
       });
       const json = await res.json();
       if (json.status === "success") {
-        setMapUrl("http://localhost:5000/get-map");
+        // 🔽 変更点2
+        setMapUrl(`${baseUrl}/get-map`);
       } else {
         alert("ナビ生成に失敗しました");
       }

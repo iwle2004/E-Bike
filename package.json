@@ -12,8 +12,9 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-leaflet": "^5.0.0",
-    "react-router-dom": "^7.6.1",
-    "react-scripts": "5.0.1",
+    "react-router-dom": "^7.6.1", 
+    "react-scripts": "^5.0.1",
+    "serve": "^14.2.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -42,5 +43,19 @@
   },
   "devDependencies": {
     "gh-pages": "^6.3.0"
+   
+  },
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iwle2004/E-Bike.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iwle2004/E-Bike/issues"
   }
+  
 }
