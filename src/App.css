@@ -1,22 +1,67 @@
-/* Reset and base */
-body {
+/* Navbar container */
+.navbar {
+  display: flex;
+  align-items: center;
+  background-color: #2a9d8f; /* teal-ish color */
+  padding: 10px 20px;
+  color: white;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0;
-  background: #fafafa;
-  color: #222;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Navbar */
-.navbar {
-  background-color: #1769aa;
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
+/* Navbar title */
 .navbar-title {
-  color: white;
+  font-weight: bold;
+  font-size: 1.8rem;
+  margin-right: 40px;
+  user-select: none;
+}
+
+/* Container for links and back button */
+.navbar-links {
+  display: flex;
+  gap: 20px; /* space between buttons */
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Common style for links and back button */
+.navbar-links a,
+.navbar-links button.navbar-back-button {
+  background-color: #e9f1f7; /* light bluish */
+  color: #2a9d8f;            /* teal-ish */
+  border: none;
+  padding: 8px 16px;
+  font-size: 1rem;
+  border-radius: 25px;
+  cursor: pointer;
+  text-decoration: none;
   font-weight: 600;
-  font-size: 1.5rem;
-  margin: 0;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 4px rgba(42, 157, 143, 0.3);
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hover effect */
+.navbar-links a:hover,
+.navbar-links button.navbar-back-button:hover {
+  background-color: #2a9d8f; /* teal-ish */
+  color: white;
+  box-shadow: 0 4px 8px rgba(42, 157, 143, 0.6);
+}
+
+/* Focus style for accessibility */
+.navbar-links button.navbar-back-button:focus {
+  outline: 2px solid #e76f51;
+  outline-offset: 2px;
+}
+
+/* Optional: Add subtle active press effect */
+.navbar-links a:active,
+.navbar-links button.navbar-back-button:active {
+  transform: scale(0.98);
+  transition: transform 0.1s ease;
 }

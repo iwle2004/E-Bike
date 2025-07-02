@@ -9,7 +9,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import './Auth.css';
 
-function Auth() {
+function Auth({setIsLoggedIn}) {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,6 +30,7 @@ function Auth() {
     try {
       if (isLogin) {
         await signInWithEmailAndPassword(auth, email, password);
+        setIsLoggedIn(true);
         navigate('/home'); // 👈 redirect on login
       } else {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
