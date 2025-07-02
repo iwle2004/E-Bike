@@ -31,7 +31,7 @@ def run_navigation():
             "python", nav_path,
             "--tags", tag_str,
             "--output", output_filepath,
-            "--currentLocation", currentLocation
+            "--currentLocation", json.dumps(currentLocation)
         ], check=True
         )
 
