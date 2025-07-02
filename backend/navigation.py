@@ -66,8 +66,9 @@ for element in data["elements"]:
     print(f"{name}: {lat}, {lon}")
     points.append((lat, lon))
 
-start_Location = args.currentLocation
-start_point = (start_Location)
+# JSON文字列 → dict → (lat, lon) タプル
+start_dict = json.loads(args.currentLocation)
+start_point = (start_dict["lat"], start_dict["lon"])
 end_point = (35.474763476187924, 135.38536802589823)
 
 client = openrouteservice.Client(key="5b3ce3597851110001cf6248b9ea1dfdfdb7416eb962ef2ad2bd129e")
