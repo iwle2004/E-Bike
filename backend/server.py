@@ -18,6 +18,7 @@ def run_navigation():
         output_filepath = os.path.join(base_dir, unique_filename)
 
         tags = request.json.get("tags", [])
+        currentLocation = request.json.get("currentLocation")
         if isinstance(tags, str):
             tags = json.loads(tags)
 
@@ -26,9 +27,12 @@ def run_navigation():
         else:
             tag_str = ",".join(tags)
 
-        subprocess.run(
-            ["python", nav_path, "--tags", tag_str, "--output", output_filepath], 
-            check=True
+        subprocess.run([
+            "python", nav_path,
+            "--tags", tag_str,
+            "--output", output_filepath,
+            "--currentLocation", currentLocation
+        ], check=True
         )
 
         return jsonify({"status": "success", "filename": unique_filename})
