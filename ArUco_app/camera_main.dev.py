@@ -243,3 +243,4 @@ if __name__ == "__main__":
 
 #to us
 #ArUco_checはint型です。ArUcoを2つ検知したらT,それ以外の個数のArUcoを検知したらFとなります。
+#aruco_maerkers,captured_photos,二つありますが、captured,photosのみ実行で問題ありません。

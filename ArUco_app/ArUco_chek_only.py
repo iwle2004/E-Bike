@@ -240,11 +240,18 @@ class ArUcoImageDetectionSystem:
         
         return result
 
+# ========== 設定項目 ==========
+# 検索対象のディレクトリパス
+IMAGE_FOLDER_PATH = "captured_photos"
+
+# 検出したいArUcoマーカーの数
+TARGET_ARUCO_COUNT = 2
+# =============================
+
 # 使用例
 if __name__ == "__main__":
-    # システムを初期化（ArUcoマーカーを2個検出したい場合）
-    # 画像フォルダを指定（デフォルトは"images"）
-    detector = ArUcoImageDetectionSystem(target_aruco_num=2, image_folder="captured_photos")
+    # システムを初期化
+    detector = ArUcoImageDetectionSystem(target_aruco_num=TARGET_ARUCO_COUNT, image_folder=IMAGE_FOLDER_PATH)
     
     # 全ての画像を処理
     result = detector.process_all_images()
