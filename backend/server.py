@@ -47,8 +47,7 @@ def get_map(filename):
         return "Invalid filename", 400
     
     html_path = os.path.join(os.path.dirname(__file__), filename)
-    print(f"📝 Flask: 探索するファイルパス: {html_path}")
-    print(f"📝 Flask: ファイル存在チェック: {os.path.exists(html_path)}")
+    
     if not os.path.exists(html_path):
         return "File not found", 404
         
