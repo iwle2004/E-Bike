@@ -46,7 +46,7 @@ function MapPage() {
       }
     } catch (err) {
       console.error("通信エラー:", err);
-      alert("通信エラーが発生しました");
+      alert("通信エラーが発生しました" + (json.message || ""));
     }
   };
 
