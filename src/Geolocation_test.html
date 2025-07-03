@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>現在地を連続取得</title>
+</head>
+<body>
+  <h1>現在地を連続取得中...</h1>
+  <div id="location"></div>
+
+  <script>
+    if ("geolocation" in navigator) {
+      const locationDiv = document.getElementById("location");
+
+      navigator.geolocation.watchPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          locationDiv.textContent = `緯度: ${latitude}, 経度: ${longitude}`;
+        },
+        (error) => {
+          console.error("位置情報の取得に失敗:", error);
+        },
+        {
+          enableHighAccuracy: true, // 精度優先
+          maximumAge: 1000,         // 1秒以内のデータを使う
+          timeout: 10000            // 10秒でタイムアウト
+        }
+      );
+    } else {
+      alert("このブラウザは位置情報に対応していません");
+    }
+  </script>
+</body>
+</html>
