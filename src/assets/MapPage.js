@@ -17,7 +17,7 @@ function MapPage() {
         },
         (error) => {
           console.error("現在地の取得に失敗:", error);
-          alert("位置情報の取得に失敗しました");
+          alert("位置情報の取得に失敗：位置情報サービスをオンにしてください");
         }
       );
     } else {
