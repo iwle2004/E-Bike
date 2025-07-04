@@ -36,11 +36,26 @@ if not tags_list:
 
 key, value = tags_list[0]
 
-search_box = "35.44880977985438, 135.35154309496215,35.498076744854764, 135.44095761784553"
+# JSON文字列 → dict → (lat, lon) タプル
+start_dict = json.loads(args.currentLocation)
+start_point = (start_dict["lat"], start_dict["lon"]) #現在地
+end_dict = json.loads(args.endLocation)
+end_point = (end_dict["lat"], end_dict["lon"]) #目的地
+
+serch_range = 700 #検索する円の半径
+Xs, Ys = start_point #start_pointを緯度,経度に分割
+Xe, Ye = end_point #end_pointを緯度,経度に分割
+
+#Xe = locations.get("lat")
+#Ye = locations.get("lon")
+
+# start_pointとend_pointを結ぶ直線を2分割する座標
+mid_x = (Xs + Xe) / 2
+mid_y = (Ys + Ye) / 2
 
 query = f"""
 [out:json];
-node[{key}={value}]({search_box});
+node[{key}="{value}"](around:{serch_range},{mid_x},{mid_y});
 out body;
 """
 
@@ -67,12 +82,6 @@ for element in data["elements"]:
     print(f"{name}: {lat}, {lon}")
     points.append((lat, lon))
 
-# JSON文字列 → dict → (lat, lon) タプル
-start_dict = json.loads(args.currentLocation)
-start_point = (start_dict["lat"], start_dict["lon"]) #現在地
-end_dict = json.loads(args.endLocation)
-end_point = (end_dict["lat"], end_dict["lon"]) #目的地
-
 client = openrouteservice.Client(key="5b3ce3597851110001cf6248b9ea1dfdfdb7416eb962ef2ad2bd129e")
 
 coords = [tuple(reversed(start_point))]
@@ -98,15 +107,29 @@ else:
 
 m = folium.Map(location=(mean_lat, mean_lon), zoom_start=15)
 
+# 出発点マーカー
 folium.Marker(start_point, tooltip="出発点（東舞鶴駅）", icon=folium.Icon(color="red")).add_to(m)
 folium.Marker(end_point, tooltip="目的地（赤レンガパーク）", icon=folium.Icon(color="green")).add_to(m)
 
+# 目的地マーカー
 for i, p in enumerate(points):
     folium.Marker(p, tooltip=f"地点{i}: {p}").add_to(m)
 
+# ルート線を描画（lon,lat→lat,lonに変換）
 if route_coords:
     route_latlon = [(lat, lon) for lon, lat in route_coords]
     folium.PolyLine(route_latlon, color="blue", weight=4, opacity=0.7).add_to(m)
+
+# 検索範囲の円を描画
+folium.Circle(
+    location=(mid_x,mid_y),
+    radius=serch_range,  # 単位はメートル
+    color="blue",
+    opacity=0.5,
+    fill=True,
+    fill_color="blue",
+    fill_opacity=0.1,
+).add_to(m)
 
 output_path = args.output
 m.save(output_path)
