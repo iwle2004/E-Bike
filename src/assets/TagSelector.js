@@ -25,10 +25,12 @@ const tagGroups = {
   ],
 };
 
-const endpointGroups = [
-  { lat: 35.47608894530083, lon: 135.387461090522 }, //赤れんが博物館
-  { lat: 35.474666114787986, lon: 135.38543573277403 }, //赤レンガパーク
-];
+const endpointGroups = {
+  "目的地":[
+  { name: "赤れんが博物館", lat: 35.47608894530083, lon: 135.387461090522 }, //赤れんが博物館
+  { name: "赤レンガパーク", lat: 35.474666114787986, lon: 135.38543573277403 }, //赤レンガパーク
+  ],
+};
 
 const TagSelector = ({ onRunNavigation }) => {
   const [selectedTags, setSelectedTags] = useState([]);
@@ -71,23 +73,22 @@ const TagSelector = ({ onRunNavigation }) => {
       ))}
 
       <h2>目的地を選択してください</h2>
-      <fieldset>
-        {endpointGroups.map((coords, index) => (
-          <label key={index} style={{ display: "block" }}>
-            <input
-              type="radio"
-              name="endLocation"
-              checked={
-                selectedEndpoint &&
-                selectedEndpoint.lat === coords.lat &&
-                selectedEndpoint.lon === coords.lon
-              }
-              onChange={() => handleDestinationChange(index)}
-            />
-            ({coords.lat}, {coords.lon})
-          </label>
-        ))}
-      </fieldset>
+      {Object.entries(endpointGroups).map(([group, destinations]) => (
+        <fieldset key={group}>
+          <legend><strong>{group}</strong></legend>
+          {destinations.map((endpoint) => (
+            <label key={endpoint.name} style={{ display: "block" }}>
+              <input
+                type="radio"
+                name="destination"
+                checked={selectedEndpoint?.name === endpoint.name}
+                onChange={() => setSelectedEndpoint(endpoint)}
+              />
+              {endpoint.name}
+            </label>
+          ))}
+        </fieldset>
+      ))}
 
       <button onClick={handleSubmit}>ナビを開始する</button>
     </div>
