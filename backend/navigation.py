@@ -47,23 +47,30 @@ Xs, Ys = start_point #start_pointを緯度,経度に分割
 Xe, Ye = end_point #end_pointを緯度,経度に分割
 
 #相対距離計算関数
-def distance(x1, y1, x2, y2):
-    dx = abs(x2 - x1)
-    dy = abs(y2 - y1)
-    return math.sqrt(dx**2 + dy**2)
+def distance(lat1, lon1, lat2, lon2):
+    # Haversine距離の簡易版（近似）
+    R = 6371000  # 地球半径[m]
+    dlat = math.radians(lat2 - lat1)
+    dlon = math.radians(lon2 - lon1)
+    a = (math.sin(dlat / 2) ** 2 +
+         math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) *
+         math.sin(dlon / 2) ** 2)
+    return 2 * R * math.asin(math.sqrt(a))
 
-mid_x = Xs + Xe / 2 # start_pointとend_pointを結ぶ直線を2分割する座標
-mid_y = Ys + Ye / 2
-lim_range = 700 #現在地と目的地の限界距離[m]
+# 中心座標と検索範囲を計算
+mid_x = (Xs + Xe) / 2
+mid_y = (Ys + Ye) / 2
 
-if distance(Xs,Ys,Xe,Ye) <= lim_range:
-    center_x = mid_x
-    center_y = mid_y
-    serch_range = distance(Xs,Ys,mid_x,mid_y) #検索する円の半径
+dist = distance(Xs, Ys, Xe, Ye)
+lim_range = 700  #検索範囲の限界半径[m]
+
+if dist <= lim_range:
+    center_x, center_y = mid_x, mid_y
+    serch_range = dist / 2
 else:
+    center_x, center_y = mid_x, mid_y
     serch_range = lim_range / 2
-    center_x = abs(mid_x - Xs) / 2
-    center_y = abs(mid_y - Ys) / 2
+
 
 query = f"""
 [out:json];
