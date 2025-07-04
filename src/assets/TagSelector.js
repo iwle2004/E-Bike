@@ -42,10 +42,6 @@ const TagSelector = ({ onRunNavigation }) => {
     );
   };
 
-  const handleDestinationChange = (index) => {
-    setSelectedEndpoint(endpointGroups[index]);
-  };
-
   const handleSubmit = () => {
     onRunNavigation(selectedTags, selectedEndpoint);
   };
