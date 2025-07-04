@@ -7,6 +7,7 @@ from itertools import permutations
 import openrouteservice
 from openrouteservice import convert
 import folium
+import math
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--tags", type=str, default="")
@@ -42,20 +43,31 @@ start_point = (start_dict["lat"], start_dict["lon"]) #現在地
 end_dict = json.loads(args.endLocation)
 end_point = (end_dict["lat"], end_dict["lon"]) #目的地
 
-serch_range = 700 #検索する円の半径
 Xs, Ys = start_point #start_pointを緯度,経度に分割
 Xe, Ye = end_point #end_pointを緯度,経度に分割
 
-#Xe = locations.get("lat")
-#Ye = locations.get("lon")
+#相対距離計算関数
+def distance(x1, y1, x2, y2):
+    dx = abs(x2 - x1)
+    dy = abs(y2 - y1)
+    return math.sqrt(dx**2 + dy**2)
 
-# start_pointとend_pointを結ぶ直線を2分割する座標
-mid_x = (Xs + Xe) / 2
-mid_y = (Ys + Ye) / 2
+mid_x = Xs + Xe / 2 # start_pointとend_pointを結ぶ直線を2分割する座標
+mid_y = Ys + Ye / 2
+lim_range = 700 #現在地と目的地の限界距離[m]
+
+if distance(Xs,Ys,Xe,Ye) <= lim_range:
+    center_x = mid_x
+    center_y = mid_y
+    serch_range = distance(Xs,Ys,mid_x,mid_y) #検索する円の半径
+else:
+    serch_range = lim_range / 2
+    center_x = abs(mid_x - Xs) / 2
+    center_y = abs(mid_y - Ys) / 2
 
 query = f"""
 [out:json];
-node[{key}="{value}"](around:{serch_range},{mid_x},{mid_y});
+node[{key}="{value}"](around:{serch_range},{center_x},{center_y});
 out body;
 """
 
@@ -123,7 +135,7 @@ if route_coords:
 # 検索範囲の円を描画
 folium.Circle(
     location=(mid_x,mid_y),
-    radius=serch_range,  # 単位はメートル
+    radius=serch_range,
     color="blue",
     opacity=0.5,
     fill=True,
