@@ -34,7 +34,7 @@ const endpointGroups = {
 
 const TagSelector = ({ onRunNavigation }) => {
   const [selectedTags, setSelectedTags] = useState([]);
-  const [selectedEndpoint, setSelectedEndpoint] = useState(null);
+  const [selectedEndpoint, setSelectedEndpoint] = useState(endpointGroups["目的地"][0]);
 
   const handleTagChange = (tagStr) => {
     setSelectedTags((prev) =>
