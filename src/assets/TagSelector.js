@@ -26,15 +26,16 @@ const tagGroups = {
 };
 
 const endpointGroups = {
-  "目的地":[
-  { name: "赤れんが博物館", lat: 35.47608894530083, lon: 135.387461090522 }, //赤れんが博物館
-  { name: "赤レンガパーク", lat: 35.474666114787986, lon: 135.38543573277403 }, //赤レンガパーク
+  "目的地": [
+    { name: "赤れんが博物館", lat: 35.47608894530083, lon: 135.387461090522 },
+    { name: "赤レンガパーク", lat: 35.474666114787986, lon: 135.38543573277403 },
   ],
 };
 
 const TagSelector = ({ onRunNavigation }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedEndpoint, setSelectedEndpoint] = useState(endpointGroups["目的地"][0]);
+  const [loading, setLoading] = useState(false);
 
   const handleTagChange = (tagStr) => {
     setSelectedTags((prev) =>
@@ -42,12 +43,17 @@ const TagSelector = ({ onRunNavigation }) => {
     );
   };
 
-  const handleSubmit = () => {
-    onRunNavigation(selectedTags, selectedEndpoint);
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      await onRunNavigation(selectedTags, selectedEndpoint);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div>
+    <div style={{ padding: "2rem" }}>
       <h2>行きたい場所のカテゴリを選んでください</h2>
       {Object.entries(tagGroups).map(([group, tags]) => (
         <fieldset key={group}>
@@ -60,6 +66,7 @@ const TagSelector = ({ onRunNavigation }) => {
                   type="checkbox"
                   checked={selectedTags.includes(tagStr)}
                   onChange={() => handleTagChange(tagStr)}
+                  disabled={loading}
                 />
                 {label}
               </label>
@@ -79,6 +86,7 @@ const TagSelector = ({ onRunNavigation }) => {
                 name="endLocation"
                 checked={selectedEndpoint?.name === endpoint.name}
                 onChange={() => setSelectedEndpoint(endpoint)}
+                disabled={loading}
               />
               {endpoint.name}
             </label>
@@ -86,7 +94,27 @@ const TagSelector = ({ onRunNavigation }) => {
         </fieldset>
       ))}
 
-      <button onClick={handleSubmit}>ナビを開始する</button>
+      <button onClick={handleSubmit} disabled={loading}>
+        {loading ? "ナビ生成中..." : "ナビを開始する"}
+      </button>
+
+      {loading && <div className="spinner" />}
+
+      <style>{`
+        .spinner {
+          width: 40px;
+          height: 40px;
+          border: 5px solid #ccc;
+          border-top: 5px solid #3498db;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          margin: 1rem auto;
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 };
