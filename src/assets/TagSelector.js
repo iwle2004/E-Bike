@@ -25,22 +25,32 @@ const tagGroups = {
   ],
 };
 
+const endpointGroups = [
+  { lat: 35.47608894530083, lon: 135.387461090522 }, //赤れんが博物館
+  { lat: 35.474666114787986, lon: 135.38543573277403 }, //赤レンガパーク
+];
+
 const TagSelector = ({ onRunNavigation }) => {
   const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedEndpoint, setSelectedEndpoint] = useState(null);
 
-  const handleChange = (tagStr) => {
+  const handleTagChange = (tagStr) => {
     setSelectedTags((prev) =>
       prev.includes(tagStr) ? prev.filter((t) => t !== tagStr) : [...prev, tagStr]
     );
   };
 
+  const handleDestinationChange = (index) => {
+    setSelectedEndpoint(endpointGroups[index]);
+  };
+
   const handleSubmit = () => {
-    onRunNavigation(selectedTags);
+    onRunNavigation(selectedTags, selectedEndpoint);
   };
 
   return (
     <div>
-      <h2>行きたい場所を選んでください</h2>
+      <h2>行きたい場所のカテゴリを選んでください</h2>
       {Object.entries(tagGroups).map(([group, tags]) => (
         <fieldset key={group}>
           <legend><strong>{group}</strong></legend>
@@ -51,7 +61,7 @@ const TagSelector = ({ onRunNavigation }) => {
                 <input
                   type="checkbox"
                   checked={selectedTags.includes(tagStr)}
-                  onChange={() => handleChange(tagStr)}
+                  onChange={() => handleTagChange(tagStr)}
                 />
                 {label}
               </label>
@@ -59,6 +69,26 @@ const TagSelector = ({ onRunNavigation }) => {
           })}
         </fieldset>
       ))}
+
+      <h2>目的地を選択してください</h2>
+      <fieldset>
+        {endpointGroups.map((coords, index) => (
+          <label key={index} style={{ display: "block" }}>
+            <input
+              type="radio"
+              name="endLocation"
+              checked={
+                selectedEndpoint &&
+                selectedEndpoint.lat === coords.lat &&
+                selectedEndpoint.lon === coords.lon
+              }
+              onChange={() => handleDestinationChange(index)}
+            />
+            ({coords.lat}, {coords.lon})
+          </label>
+        ))}
+      </fieldset>
+
       <button onClick={handleSubmit}>ナビを開始する</button>
     </div>
   );
