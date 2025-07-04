@@ -70,7 +70,7 @@ for element in data["elements"]:
 # JSON文字列 → dict → (lat, lon) タプル
 start_dict = json.loads(args.currentLocation)
 start_point = (start_dict["lat"], start_dict["lon"]) #現在地
-end_dict = json.loads(args.destination)
+end_dict = json.loads(args.endLocation)
 end_point = (end_dict["lat"], end_dict["lon"]) #目的地
 
 client = openrouteservice.Client(key="5b3ce3597851110001cf6248b9ea1dfdfdb7416eb962ef2ad2bd129e")
