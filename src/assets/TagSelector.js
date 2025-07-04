@@ -76,10 +76,10 @@ const TagSelector = ({ onRunNavigation }) => {
       ))}
 
       <h2>目的地を選択してください</h2>
-      {Object.entries(endpointGroups).map(([group, destinations]) => (
+      {Object.entries(endpointGroups).map(([group, endLocation]) => (
         <fieldset key={group}>
           <legend><strong>{group}</strong></legend>
-          {destinations.map((endpoint) => (
+          {endpointGroups.map((endpoint) => (
             <label key={endpoint.name} style={{ display: "block" }}>
               <input
                 type="radio"
