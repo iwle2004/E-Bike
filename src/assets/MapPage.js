@@ -26,29 +26,33 @@ function MapPage() {
   }, []);
 
   // 📡 ナビゲーション開始リクエスト
-  const runNavigation = async (tags) => {
-    const apiUrl = process.env.REACT_APP_API_URL;
-    const baseUrl = apiUrl || "http://localhost:5000";
+  const runNavigation = async (tags, endLocation) => {
+  const apiUrl = process.env.REACT_APP_API_URL;
+  const baseUrl = apiUrl || "http://localhost:5000";
 
-    try {
-      const res = await fetch(`${baseUrl}/run-navigation`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tags, currentLocation }), // ✅ 現在地も送信
-      });
+  try {
+    const res = await fetch(`${baseUrl}/run-navigation`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        tags,
+        currentLocation,
+        endLocation
+      }),
+    });
 
-      const json = await res.json();
+    const json = await res.json();
 
-      if (json.status === "success" && json.filename) {
-        setMapUrl(`${baseUrl}/get-map/${json.filename}`);
-      } else {
-        alert("ナビ生成に失敗しましたmp: " + (json.message || ""));
-      }
-    } catch (err) {
-      console.error("通信エラー:", err);
-      alert("通信エラーが発生しましたa" + (err || ""));
+    if (json.status === "success" && json.filename) {
+      setMapUrl(`${baseUrl}/get-map/${json.filename}`);
+    } else {
+      alert("ナビ生成に失敗しましたmp: " + (json.message || ""));
     }
-  };
+  } catch (err) {
+    console.error("通信エラー:", err);
+    alert("通信エラーが発生しましたa" + (err || ""));
+  }
+};
 
   return (
     <div className="map-wrapper">

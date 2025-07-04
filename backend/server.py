@@ -19,6 +19,7 @@ def run_navigation():
 
         tags = request.json.get("tags", [])
         currentLocation = request.json.get("currentLocation")
+        endLocation = request.json.get("endLocation")
         if isinstance(tags, str):
             tags = json.loads(tags)
 
@@ -31,9 +32,9 @@ def run_navigation():
             "python", nav_path,
             "--tags", tag_str,
             "--output", output_filepath,
-            "--currentLocation", json.dumps(currentLocation)
-        ], check=True
-        )
+            "--currentLocation", json.dumps(currentLocation),
+            "--endLocation", json.dumps(endLocation)
+        ], check=True)
 
         return jsonify({"status": "success", "filename": unique_filename})
 
