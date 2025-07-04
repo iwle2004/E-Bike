@@ -80,7 +80,7 @@ const TagSelector = ({ onRunNavigation }) => {
             <label key={endpoint.name} style={{ display: "block" }}>
               <input
                 type="radio"
-                name="destination"
+                name="endLocation"
                 checked={selectedEndpoint?.name === endpoint.name}
                 onChange={() => setSelectedEndpoint(endpoint)}
               />
