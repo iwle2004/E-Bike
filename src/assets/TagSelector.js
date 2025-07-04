@@ -79,7 +79,7 @@ const TagSelector = ({ onRunNavigation }) => {
       {Object.entries(endpointGroups).map(([group, endLocation]) => (
         <fieldset key={group}>
           <legend><strong>{group}</strong></legend>
-          {endpointGroups.map((endpoint) => (
+          {endLocation.map((endpoint) => (
             <label key={endpoint.name} style={{ display: "block" }}>
               <input
                 type="radio"
