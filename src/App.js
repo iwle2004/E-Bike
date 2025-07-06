@@ -1,33 +1,45 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router';
+import { BrowserRouter as Router, Routes, Route} from 'react-router';
 import 'leaflet/dist/leaflet.css';
 import MainPage from './assets/MainPage';
 import PhotoSubmitPage from './assets/PhotoSubmitPage';
+import Rent from './assets/Rent';
 import Auth from './assets/Auth';
 import MapPage from './assets/MapPage';
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './assets/firebase';
 
 function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsLoggedIn(!!user);
+    });
+    return () => unsubscribe();
+  }, []);
   return (
     <Router>
       <div>
         <nav className="navbar">
           <h1 className="navbar-title">Maizuru Bike Rental</h1>
-          {isLoggedIn && (
+            {isLoggedIn && (
             <div className="navbar-links">
-              <Link to="/home">Home</Link>
-              <Link to="/map">Map</Link>
-              <Link to="/submit-photo">Submit Photo</Link>
-            </div>
-          )}
+              <button
+                onClick={() => window.history.back()}
+                className="navbar-back-button"
+                >
+                ← Back
+              </button>
+            </div>)}
         </nav>
         <Routes>
-          <Route path="/" element={<Auth />} />
-          <Route path="/home" element={<MainPage />} />
-          <Route path="/map" element={<MapPage />} />
-          <Route path="/submit" element={<PhotoSubmitPage />} />
+          <Route path="/" element={<Auth setIsLoggedIn={setIsLoggedIn}/>} />
+          <Route path="/home" element={<MainPage setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/map" element={<MapPage setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/submit" element={<PhotoSubmitPage setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/rent" element={<Rent setIsLoggedIn={setIsLoggedIn} />} />
         </Routes>
       </div>
     </Router>
