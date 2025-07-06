@@ -4,7 +4,7 @@ import { signOut, onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
 import './MainPage.css'; // Make sure this path matches your file structure
 
-function MainPage() {
+function MainPage({setIsLoggedIn}) {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,6 +19,7 @@ function MainPage() {
   const handleLogout = async () => {
     try {
       await signOut(auth);
+      setIsLoggedIn(false);
       navigate('/');
     } catch (error) {
       console.error('Error signing out:', error);

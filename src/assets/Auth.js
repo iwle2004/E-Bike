@@ -19,6 +19,7 @@ function Auth({setIsLoggedIn}) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        setIsLoggedIn(true);
         navigate('/home'); //  redirect logged-in users
       }
     });
@@ -31,10 +32,10 @@ function Auth({setIsLoggedIn}) {
       if (isLogin) {
         await signInWithEmailAndPassword(auth, email, password);
         setIsLoggedIn(true);
-        navigate('/home'); // 👈 redirect on login
+        await navigate('/home'); // 👈 redirect on login
       } else {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
+        const {user} = userCredential;
 
         // 👇 Save user info to Firestore
         await setDoc(doc(db, 'users', user.uid), {
@@ -42,7 +43,7 @@ function Auth({setIsLoggedIn}) {
           email: user.email,
           createdAt: new Date(),
         });
-
+        setIsLoggedIn(true);
         navigate('/home'); // redirect on sign up
       }
     } catch (err) {
