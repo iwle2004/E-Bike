@@ -6,11 +6,19 @@ import Rent from './assets/Rent';
 import Auth from './assets/Auth';
 import MapPage from './assets/MapPage';
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './assets/firebase';
 
 function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsLoggedIn(!!user);
+    });
+    return () => unsubscribe();
+  }, []);
   return (
     <Router>
       <div>
@@ -28,10 +36,10 @@ function App() {
         </nav>
         <Routes>
           <Route path="/" element={<Auth setIsLoggedIn={setIsLoggedIn}/>} />
-          <Route path="/home" element={<MainPage />} />
-          <Route path="/map" element={<MapPage />} />
-          <Route path="/submit" element={<PhotoSubmitPage />} />
-          <Route path="/rent" element={<Rent />} />
+          <Route path="/home" element={<MainPage setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/map" element={<MapPage setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/submit" element={<PhotoSubmitPage setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/rent" element={<Rent setIsLoggedIn={setIsLoggedIn} />} />
         </Routes>
       </div>
     </Router>
