@@ -9,7 +9,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import './Auth.css';
 
-function Auth() {
+function Auth({setIsLoggedIn}) {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,6 +19,7 @@ function Auth() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        setIsLoggedIn(true);
         navigate('/home'); //  redirect logged-in users
       }
     });
@@ -30,10 +31,11 @@ function Auth() {
     try {
       if (isLogin) {
         await signInWithEmailAndPassword(auth, email, password);
-        navigate('/home'); // 👈 redirect on login
+        setIsLoggedIn(true);
+        await navigate('/home'); // 👈 redirect on login
       } else {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
+        const {user} = userCredential;
 
         // 👇 Save user info to Firestore
         await setDoc(doc(db, 'users', user.uid), {
@@ -41,7 +43,7 @@ function Auth() {
           email: user.email,
           createdAt: new Date(),
         });
-
+        setIsLoggedIn(true);
         navigate('/home'); // redirect on sign up
       }
     } catch (err) {
