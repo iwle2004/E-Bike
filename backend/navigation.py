@@ -66,10 +66,10 @@ lim_range = 2500  #検索範囲の限界半径[m]
 
 if dist <= lim_range:
     center_x, center_y = mid_x, mid_y
-    serch_range = dist / 2
+    serch_range = lim_range #範囲制限するならdist / 2
 else:
     center_x, center_y = mid_x, mid_y
-    serch_range = lim_range / 2
+    serch_range = lim_range #範囲制限するならlim_range / 2
 
 
 query = f"""
