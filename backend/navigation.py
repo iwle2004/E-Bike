@@ -152,4 +152,5 @@ folium.Circle(
 
 output_path = args.output
 m.save(output_path)
-print(f"地図作成完了: {output_path}")
+print(f"✅ 地図作成完了: {output_path}")
+print("✅ HTMLファイルは存在するか:", os.path.exists(output_path))
