@@ -45,7 +45,7 @@ function MapPage() {
 
     if (json.status === "success" && json.filename) {
       setMapUrl(`${baseUrl}/get-map/${json.filename}`);
-      alert(json.filename)
+      alert("ナビ結果:", json);
     } else {
       alert("ナビ生成に失敗しましたmp: " + (json.message || ""));
     }
