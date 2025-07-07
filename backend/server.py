@@ -12,10 +12,11 @@ CORS(app)
 def run_navigation():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
+        print(base_dir)
         nav_path = os.path.join(base_dir, "navigation.py")
         
         unique_filename = f"map_{int(time.time())}.html"
-        output_filepath = os.path.join(base_dir, unique_filename)
+        output_filepath = os.path.join("/tmp", unique_filename)
 
         tags = request.json.get("tags", [])
         currentLocation = request.json.get("currentLocation")
@@ -47,7 +48,7 @@ def get_map(filename):
     if ".." in filename or filename.startswith("/"):
         return "Invalid filename", 400
     
-    html_path = os.path.join(os.path.dirname(__file__), filename)
+    html_path = os.path.join("/tmp", filename)
     
     if not os.path.exists(html_path):
         return "File not found", 404
