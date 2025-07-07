@@ -62,7 +62,7 @@ mid_x = (Xs + Xe) / 2
 mid_y = (Ys + Ye) / 2
 
 dist = distance(Xs, Ys, Xe, Ye)
-lim_range = 2500  #検索範囲の限界半径[m]
+lim_range = 4000  #検索範囲の限界半径[m]
 
 if dist <= lim_range:
     center_x, center_y = mid_x, mid_y
