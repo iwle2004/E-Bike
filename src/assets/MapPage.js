@@ -44,11 +44,8 @@ function MapPage() {
     const json = await res.json();
 
     if (json.status === "success" && json.filename) {
-      const fullUrl = `${baseUrl}/get-map/${json.filename}`;
-      console.log("🌍 マップURL:", fullUrl);  // ← ここでログ確認
-      setMapUrl(fullUrl);
-    }
-    else {
+      setMapUrl(`${baseUrl}/get-map/${json.filename}`);
+    } else {
       alert("ナビ生成に失敗しましたmp: " + (json.message || ""));
     }
   } catch (err) {
