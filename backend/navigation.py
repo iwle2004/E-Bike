@@ -62,7 +62,7 @@ mid_x = (Xs + Xe) / 2
 mid_y = (Ys + Ye) / 2
 
 dist = distance(Xs, Ys, Xe, Ye)
-lim_range = 700  #検索範囲の限界半径[m]
+lim_range = 2500  #検索範囲の限界半径[m]
 
 if dist <= lim_range:
     center_x, center_y = mid_x, mid_y
@@ -152,5 +152,4 @@ folium.Circle(
 
 output_path = args.output
 m.save(output_path)
-print(f"✅ 地図作成完了: {output_path}")
-print("✅ HTMLファイルは存在するか:", os.path.exists(output_path))
+print(f"地図作成完了: {output_path}")
