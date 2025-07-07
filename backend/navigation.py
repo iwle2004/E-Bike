@@ -107,8 +107,11 @@ client = openrouteservice.Client(key="5b3ce3597851110001cf6248b9ea1dfdfdb7416eb9
 #経由地からランダムに経由地を抽出
 bottom_waypoints = 3 #最低の経由地数
 random_number = random.randint(1, len(data)) #経由地数以下のランダムな数生成
-if len(points) >= bottom_waypoints:
-    selected_points = random.sample(points, random_number)
+if random_route :
+    if len(points) >= bottom_waypoints:
+        selected_points = random.sample(points, random_number)
+    else:
+        selected_points = points
 else:
     selected_points = points
 
