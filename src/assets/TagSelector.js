@@ -54,7 +54,7 @@ const TagSelector = ({ onRunNavigation }) => {
   };
 
   return (
-    <div style={{ padding: "10rem", textAlign: "left" }}>
+    <div style={{ padding: "2rem", textAlign: "left" }}>
       <h2>行きたい場所のカテゴリを選んでください</h2>
       {Object.entries(tagGroups).map(([group, tags]) => (
         <fieldset key={group}>
@@ -67,7 +67,7 @@ const TagSelector = ({ onRunNavigation }) => {
                 display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    gap: "0.5em",
+    gap: "8em",
     width: "100%",          // ← 固定せず柔軟に
     maxWidth: "900px",      // ← 必要に応じて広げる
     wordBreak: "break-word",
