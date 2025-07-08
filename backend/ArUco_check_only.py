@@ -8,9 +8,13 @@ import glob
 
 # ========== Firebase Initialization ==========
 
-cred = credentials.Certificate("serviceAccountKey.json")  # Replace with your JSON key if different
+cred_json = os.environ.get("FIREBASE_CREDENTIALS_JSON")
+cred_dict = json.loads(cred_json)
+cred = credentials.Certificate(cred_dict)
+
+# Initialize Firebase app
 firebase_admin.initialize_app(cred, {
-    'storageBucket': 'e-bike-maizuru.firebasestorage.app'  # Replace with your Firebase Storage bucket
+    'storageBucket': 'e-bike-maizuru.firebasestorage.app'
 })
 
 # ========== Firebase Image Download Helper ==========
