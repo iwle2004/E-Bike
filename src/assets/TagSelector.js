@@ -70,7 +70,6 @@ const TagSelector = ({ onRunNavigation }) => {
     gap: "8em",
     width: "100%",          // ← 固定せず柔軟に
     maxWidth: "900px",      // ← 必要に応じて広げる
-    wordBreak: "break-word",
     whiteSpace: "normal",
     writingMode: "horizontal-tb",
     direction: "ltr",
