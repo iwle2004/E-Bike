@@ -6,6 +6,7 @@ import TagSelector from "./TagSelector";
 function MapPage() {
   const [mapUrl, setMapUrl] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
+  const [randomRoute, setRandomRoute] = useState(false);
 
   // 🌍 現在地を取得
   useEffect(() => {
@@ -37,8 +38,8 @@ function MapPage() {
       body: JSON.stringify({
         tags,
         currentLocation,
-        endLocation,
-        random_route
+        random_route: randomRoute,
+        endLocation
       }),
     });
 
