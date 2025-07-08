@@ -1,32 +1,43 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import './MapPage.css'
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TagSelector from "./assets/TagSelector";
 
 function App() {
   const [mapUrl, setMapUrl] = useState(null);
+  const [currentLocation, setCurrentLocation] = useState(null);
 
-  const runNavigation = async (tags) => {
-    // 環境変数からバックエンドのURLを取得
+  // ✅ 現在地取得：マウント時に1度だけ実行
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setCurrentLocation({ lat: latitude, lon: longitude });
+        },
+        (error) => {
+          console.error("現在地の取得に失敗:", error);
+          alert("位置情報の取得に失敗しました");
+        }
+      );
+    } else {
+      alert("このブラウザではGeolocationがサポートされていません");
+    }
+  }, []);
+
+  const runNavigation = async (tags, currentLocation) => {
     const apiUrl = process.env.REACT_APP_API_URL;
-
-    // もしapiUrlが未設定なら、ローカル用のURLを使う（開発時に便利）
     const baseUrl = apiUrl || "http://localhost:5000";
 
     try {
-      // 🔽 変更点1
       const res = await fetch(`${baseUrl}/run-navigation`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tags }),
+        body: JSON.stringify({ tags, currentLocation }), // ✅ 位置情報も一緒に送信可能
       });
       const json = await res.json();
       if (json.status === "success") {
-        // 🔽 変更点2
         setMapUrl(`${baseUrl}/get-map`);
       } else {
-        alert("ナビ生成に失敗しました");
+        alert("ナビ生成に失敗しましたnav: " + (json.message || ""));
       }
     } catch {
       alert("通信エラーが発生しました");
