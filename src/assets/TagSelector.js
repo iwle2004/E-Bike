@@ -36,6 +36,7 @@ const TagSelector = ({ onRunNavigation }) => {
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedEndpoint, setSelectedEndpoint] = useState(endpointGroups["目的地"][0]);
   const [loading, setLoading] = useState(false);
+  const [randomroute, setRandomroute] = useState(false);
 
   const handleTagChange = (tagStr) => {
     setSelectedTags((prev) =>
@@ -84,7 +85,7 @@ const TagSelector = ({ onRunNavigation }) => {
               <input
                 type="radio"
                 name="endLocation"
-                checked={selectedEndpoint?.name === endpoint.name}
+                checked={randomroute?.name === endpoint.name}
                 onChange={() => setSelectedEndpoint(endpoint)}
                 disabled={loading}
               />
@@ -93,6 +94,17 @@ const TagSelector = ({ onRunNavigation }) => {
           ))}
         </fieldset>
       ))}
+
+      <h2>ルート生成をランダムにしますか？</h2>
+      <label style={{ display: "block", marginBottom: "1em" }}>
+        <input
+          type="checkbox"
+          checked={randomroute}
+          onChange={(e) => setRandomroute(e.target.checked)}
+          disabled={loading}
+        />
+        ランダムに経由地を選択する
+      </label>
 
       <button onClick={handleSubmit} disabled={loading}>
         {loading ? "ナビ生成中..." : "ナビを開始する"}

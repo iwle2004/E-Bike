@@ -37,7 +37,8 @@ function MapPage() {
       body: JSON.stringify({
         tags,
         currentLocation,
-        endLocation
+        endLocation,
+        random_route
       }),
     });
 
