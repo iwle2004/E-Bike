@@ -2,10 +2,10 @@ import React, { useState } from "react";
 
 const tagGroups = {
   "観光・歴史": [
-    { key: "historic", type: "monument", label: "記念碑" },
-    { key: "historic", type: "memorial", label: "慰霊碑" },
-    { key: "historic", type: "castle", label: "城" },
-    { key: "tourism", type: "museum", label: "博物館" },
+    { key: "historic", type: "monument", label: "記念碑(舞鶴重砲兵連隊跡、舞鶴東～小浜西 開通記念碑、)" },
+    { key: "historic", type: "memorial", label: "慰霊碑(四面山忠魂碑、舞鶴空襲学徒犠牲者慰霊碑、舞鶴海軍墓地)" },
+    { key: "historic", type: "castle", label: "城(浜村城跡、溝尻城跡、行永城跡)" },
+    { key: "tourism", type: "museum", label: "博物館(舞鶴の電気発祥の地、海軍記念館、ルーシーちゃんの魔法の玩具博物館)" },
     { key: "tourism", type: "attraction", label: "観光地" },
   ],
   "飲食": [
@@ -19,7 +19,7 @@ const tagGroups = {
     { key: "amenity", type: "pharmacy", label: "薬局" },
   ],
   "休憩・滞在": [
-    { key: "leisure", type: "park", label: "公園" },
+    { key: "leisure", type: "park", label: "公園(舞鶴公園、中舞鶴公園、舞鶴の森、青葉山ろく公園)" },
     { key: "tourism", type: "hotel", label: "ホテル" },
     { key: "amenity", type: "toilets", label: "トイレ" },
   ],
