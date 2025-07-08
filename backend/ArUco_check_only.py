@@ -3,15 +3,17 @@ from firebase_admin import credentials, storage as fb_storage
 import os
 import cv2
 import numpy as np
+import json
 from datetime import datetime
 import glob
 
 # ========== Firebase Initialization ==========
 
+
 cred_json = os.environ.get("FIREBASE_CREDENTIALS_JSON")
 cred_dict = json.loads(cred_json)
 cred = credentials.Certificate(cred_dict)
-
+# cred = credentials.Certificate("serviceAccountKey.json")
 # Initialize Firebase app
 firebase_admin.initialize_app(cred, {
     'storageBucket': 'e-bike-maizuru.firebasestorage.app'
