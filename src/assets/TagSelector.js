@@ -62,7 +62,7 @@ const TagSelector = ({ onRunNavigation }) => {
           {tags.map(({ key, type, label }) => {
             const tagStr = `${key}=${type}`;
             return (
-              <label key={tagStr} style={{ display: "flex", alignItems: "center", marginBottom: "0.5em" }}>
+              <label key={tagStr} style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", marginBottom: "0.5em" }}>
                 <input
                   type="checkbox"
                   checked={selectedTags.includes(tagStr)}
@@ -82,7 +82,7 @@ const TagSelector = ({ onRunNavigation }) => {
         <fieldset key={group}>
           <legend><strong>{group}</strong></legend>
           {endLocation.map((endpoint) => (
-            <label key={endpoint.name} style={{ display: "flex", alignItems: "center", marginBottom: "0.5em" }}>
+            <label key={endpoint.name} style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", marginBottom: "0.5em" }}>
               <input
                 type="radio"
                 name="endLocation"
@@ -98,7 +98,7 @@ const TagSelector = ({ onRunNavigation }) => {
       ))}
 
       <h2>ルート生成をランダムにしますか？</h2>
-      <label style={{ display: "flex", alignItems: "center", marginBottom: "0.5em" }}>
+      <label style={{ display: "flex", alignItems: "center", justifyContent: "flex-start", marginBottom: "0.5em" }}>
         <input
           type="checkbox"
           checked={randomroute}
