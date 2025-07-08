@@ -74,7 +74,8 @@ const TagSelector = ({ onRunNavigation }) => {
     wordBreak: "break-word",
     whiteSpace: "normal",
     overflowWrap: "break-word",  // 単語途中でも改行
-    //writingMode: "horizontal-tb" // 横書き強制
+    writingMode: "horizontal-tb",
+textOrientation: "mixed",
               }}>
                 <input
                   type="checkbox"
