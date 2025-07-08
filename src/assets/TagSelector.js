@@ -70,7 +70,7 @@ const TagSelector = ({ onRunNavigation }) => {
   gap: "0.5em",
   marginBottom: "0.5em",
   maxWidth: "600px",
-  width: "100%",
+  width: "50%",
   wordBreak: "break-word",
   whiteSpace: "normal",
   overflowWrap: "break-word",
