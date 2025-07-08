@@ -66,18 +66,14 @@ const TagSelector = ({ onRunNavigation }) => {
               style={{
                 display: "flex",
     flexDirection: "row",
-    alignItems: "center",  // ラベルのテキストを中央揃えに
+    alignItems: "center",
     gap: "0.5em",
-    marginBottom: "0.5em",
-    maxWidth: "600px",
-    width: "100%",
+    width: "100%",          // ← 固定せず柔軟に
+    maxWidth: "900px",      // ← 必要に応じて広げる
     wordBreak: "break-word",
     whiteSpace: "normal",
-    overflowWrap: "break-word",
     writingMode: "horizontal-tb",
-    textOrientation: "initial",   // ←ここを変更
     direction: "ltr",
-    unicodeBidi: "normal",
               }}>
                 <input
                   type="checkbox"
