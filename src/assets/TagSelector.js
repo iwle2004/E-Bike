@@ -47,7 +47,7 @@ const TagSelector = ({ onRunNavigation }) => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      await onRunNavigation(selectedTags, selectedEndpoint);
+      await onRunNavigation(selectedTags, selectedEndpoint, randomroute);
     } finally {
       setLoading(false);
     }
