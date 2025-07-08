@@ -65,16 +65,14 @@ const TagSelector = ({ onRunNavigation }) => {
               <label key={tagStr}
               style={{
                 display: "flex",
-    flexDirection: "row",       // 横並びにする
-    alignItems: "flex-start",   // 上揃え（テキストの先頭がinputに揃う）
-    justifyContent: "flex-start",
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: "0.5em",
     marginBottom: "0.5em",
-    gap: "0.5em",                // 隙間
-    maxWidth: "100%",
-    whiteSpace: "normal",       // 折り返し許可（←これが重要）
-    writingMode: "horizontal-tb", // 横書き強制
-    overflowWrap: "break-word",  // 単語途中でも改行
-    wordBreak: "break-word",     // 長い単語を強制改行
+    maxWidth: "600px", // ← 横幅制限ここ
+    width: "100%",
+    wordBreak: "break-word",
+    whiteSpace: "normal",
               }}>
                 <input
                   type="checkbox"
