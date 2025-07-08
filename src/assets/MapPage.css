@@ -28,3 +28,24 @@
   transform: scale(1.01);
   box-shadow: 0 8px 20px rgba(0, 90, 130, 0.3);
 }
+
+.fullscreen-button {
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.fullscreen-button:hover {
+  background: #2980b9;
+}
+
+@media screen and (max-width: 768px) {
+  .map-container iframe {
+    height: 100vh;
+  }
+}

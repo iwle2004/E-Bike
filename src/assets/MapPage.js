@@ -6,9 +6,10 @@ import TagSelector from "./TagSelector";
 function MapPage() {
   const [mapUrl, setMapUrl] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
-  const iframeRef = useRef(null); // 追加：iframe参照用
+  const [isFullscreen, setIsFullscreen] = useState(false); // 🌟 状態追加
+  const iframeRef = useRef(null);
 
-  // 🌍 現在地を取得
+  // 現在地取得
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -24,9 +25,31 @@ function MapPage() {
     } else {
       alert("このブラウザではGeolocationがサポートされていません");
     }
+
+    // 🔄 フルスクリーン変更監視
+    const handleChange = () => {
+      const fsElement =
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement;
+      setIsFullscreen(!!fsElement);
+    };
+
+    document.addEventListener("fullscreenchange", handleChange);
+    document.addEventListener("webkitfullscreenchange", handleChange);
+    document.addEventListener("mozfullscreenchange", handleChange);
+    document.addEventListener("MSFullscreenChange", handleChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleChange);
+      document.removeEventListener("webkitfullscreenchange", handleChange);
+      document.removeEventListener("mozfullscreenchange", handleChange);
+      document.removeEventListener("MSFullscreenChange", handleChange);
+    };
   }, []);
 
-  // 📡 ナビゲーション開始リクエスト
+  // ナビ生成
   const runNavigation = async (tags, endLocation, randomroute) => {
     const apiUrl = process.env.REACT_APP_API_URL;
     const baseUrl = apiUrl || "http://localhost:5000";
@@ -39,7 +62,7 @@ function MapPage() {
           tags,
           currentLocation,
           random_route: randomroute,
-          endLocation
+          endLocation,
         }),
       });
 
@@ -56,7 +79,7 @@ function MapPage() {
     }
   };
 
-  // 🔳 全画面表示処理
+  // ✅ 全画面表示
   const handleFullscreen = () => {
     const iframe = iframeRef.current;
     if (iframe.requestFullscreen) {
@@ -70,15 +93,32 @@ function MapPage() {
     }
   };
 
+  // ⛔️ 全画面解除
+  const handleExitFullscreen = () => {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+  };
+
   return (
     <div className="map-wrapper">
       <h1 className="page-title">🌸 東舞鶴観光ナビ 🌊</h1>
       <TagSelector onRunNavigation={runNavigation} />
       {mapUrl && (
         <div className="map-container">
-          <button className="fullscreen-button" onClick={handleFullscreen}>
-            ⛶ 全画面表示
-          </button>
+          {!isFullscreen ? (
+            <button className="fullscreen-button" onClick={handleFullscreen}>
+              ⛶ 全画面表示
+            </button>
+          ) : (
+            <button className="fullscreen-button" onClick={handleExitFullscreen}>
+              ✕ 全画面をやめる
+            </button>
+          )}
           <iframe
             ref={iframeRef}
             title="マップ"
@@ -86,6 +126,8 @@ function MapPage() {
             width="100%"
             height="600"
             allowFullScreen
+            webkitallowfullscreen="true"
+            mozallowfullscreen="true"
             style={{ border: "none" }}
           />
         </div>
