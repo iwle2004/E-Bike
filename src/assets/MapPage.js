@@ -6,7 +6,7 @@ import TagSelector from "./TagSelector";
 function MapPage() {
   const [mapUrl, setMapUrl] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
-  const [randomRoute, setRandomRoute] = useState(false);
+  //const [randomroute, setRandomRoute] = useState(false);
 
   // 🌍 現在地を取得
   useEffect(() => {
@@ -27,7 +27,7 @@ function MapPage() {
   }, []);
 
   // 📡 ナビゲーション開始リクエスト
-  const runNavigation = async (tags, endLocation) => {
+  const runNavigation = async (tags, endLocation, randomroute) => {
   const apiUrl = process.env.REACT_APP_API_URL;
   const baseUrl = apiUrl || "http://localhost:5000";
 
@@ -38,7 +38,7 @@ function MapPage() {
       body: JSON.stringify({
         tags,
         currentLocation,
-        random_route: randomRoute,
+        random_route: randomroute,
         endLocation
       }),
     });
