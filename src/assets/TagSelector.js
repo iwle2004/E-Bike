@@ -67,10 +67,12 @@ const TagSelector = ({ onRunNavigation }) => {
                 display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    gap: "8em",
-    width: "100%",          // ← 固定せず柔軟に
-    maxWidth: "900px",      // ← 必要に応じて広げる
-    whiteSpace: "normal",
+    gap: "0.5em",
+    width: "100%",
+    maxWidth: "900px",
+    whiteSpace: "nowrap",        // ← 改行を防ぐ
+    overflow: "hidden",          // ← はみ出し防止
+    textOverflow: "ellipsis",    // ← はみ出し時に...表示
     writingMode: "horizontal-tb",
     direction: "ltr",
               }}>
