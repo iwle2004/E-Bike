@@ -28,12 +28,16 @@ def run_navigation():
         else:
             tag_str = ",".join(tags)
 
+        random_route = request.json.get("randomroute", False)
+        random_flag = "--randomroute" if random_route else "--no-randomroute"
+        
         subprocess.run([
             "python", nav_path,
             "--tags", tag_str,
             "--output", output_filepath,
             "--currentLocation", json.dumps(currentLocation),
-            "--endLocation", json.dumps(endLocation)
+            "--endLocation", json.dumps(endLocation),
+            random_flag
         ], check=True)
 
         return jsonify({"status": "success", "filename": unique_filename})
