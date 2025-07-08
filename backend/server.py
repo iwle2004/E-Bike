@@ -28,8 +28,8 @@ def run_navigation():
         else:
             tag_str = ",".join(tags)
 
-        random_route = request.json.get("randomroute", False)
-        random_flag = "--randomroute" if random_route else "--no-randomroute"
+        random_route = request.json.get("random_route", False)
+        #random_flag = "--randomroute" if random_route else "--no-randomroute"
         
         args = [
             "python", nav_path,
@@ -38,7 +38,7 @@ def run_navigation():
             "--currentLocation", json.dumps(currentLocation),
             "--endLocation", json.dumps(endLocation),
         ]
-        if request.json.get("randomroute"):  # React から送られてくるフラグ
+        if random_route:
             args.append("--random_route")
 
         subprocess.run(args, check=True)
