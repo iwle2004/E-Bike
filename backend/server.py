@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_from_directory  # ← send_file → send_from_directory に変更
 from flask_cors import CORS
 import subprocess
 import os
@@ -13,9 +13,13 @@ def run_navigation():
     try:
         base_dir = os.path.dirname(os.path.abspath(__file__))
         nav_path = os.path.join(base_dir, "navigation.py")
-        
+
+        # maps ディレクトリを指定（事前に作っておく！）
+        maps_dir = os.path.join(base_dir, "maps")  # ← 追加
+        os.makedirs(maps_dir, exist_ok=True)       # ← ディレクトリがなければ作る
+
         unique_filename = f"map_{int(time.time())}.html"
-        output_filepath = os.path.join(base_dir, unique_filename)
+        output_filepath = os.path.join(maps_dir, unique_filename)  # ← maps に保存
 
         tags = request.json.get("tags", [])
         currentLocation = request.json.get("currentLocation")
@@ -29,8 +33,7 @@ def run_navigation():
             tag_str = ",".join(tags)
 
         random_route = request.json.get("random_route", False)
-        #random_flag = "--randomroute" if random_route else "--no-randomroute"
-        
+
         args = [
             "python", nav_path,
             "--tags", tag_str,
@@ -51,15 +54,16 @@ def run_navigation():
 
 @app.route("/get-map/<string:filename>")
 def get_map(filename):
+    # maps フォルダから安全にファイル提供
+    maps_dir = os.path.join(os.path.dirname(__file__), "maps")  # ← maps ディレクトリに限定
     if ".." in filename or filename.startswith("/"):
         return "Invalid filename", 400
-    
-    html_path = os.path.join(os.path.dirname(__file__), filename)
-    
-    if not os.path.exists(html_path):
+
+    file_path = os.path.join(maps_dir, filename)
+    if not os.path.exists(file_path):
         return "File not found", 404
-        
-    return send_file(html_path)
+
+    return send_from_directory(maps_dir, filename)  # ← 安全に返却
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
