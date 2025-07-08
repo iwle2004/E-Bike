@@ -65,17 +65,19 @@ const TagSelector = ({ onRunNavigation }) => {
               <label key={tagStr}
               style={{
                 display: "flex",
-    flexDirection: "row",
-    alignItems: "flex-start",
-    gap: "0.5em",
-    marginBottom: "0.5em",
-    maxWidth: "600px", // ← 横幅制限ここ
-    width: "100%",
-    wordBreak: "break-word",
-    whiteSpace: "normal",
-    overflowWrap: "break-word",  // 単語途中でも改行
-    writingMode: "horizontal-tb",
-textOrientation: "mixed",
+  flexDirection: "row",
+  alignItems: "flex-start",
+  gap: "0.5em",
+  marginBottom: "0.5em",
+  maxWidth: "600px",
+  width: "100%",
+  wordBreak: "break-word",
+  whiteSpace: "normal",
+  overflowWrap: "break-word",
+  writingMode: "horizontal-tb",
+  textOrientation: "mixed",
+  direction: "ltr",       // 左から右へ
+  unicodeBidi: "normal",  // bidi処理の標準化
               }}>
                 <input
                   type="checkbox"
