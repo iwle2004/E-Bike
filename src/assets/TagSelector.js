@@ -62,12 +62,13 @@ const TagSelector = ({ onRunNavigation }) => {
           {tags.map(({ key, type, label }) => {
             const tagStr = `${key}=${type}`;
             return (
-              <label key={tagStr} style={{ display: "block" }}>
+              <label key={tagStr} style={{ display: "flex", alignItems: "center", marginBottom: "0.5em" }}>
                 <input
                   type="checkbox"
                   checked={selectedTags.includes(tagStr)}
                   onChange={() => handleTagChange(tagStr)}
                   disabled={loading}
+                  style={{ marginRight: "0.5em" }}
                 />
                 {label}
               </label>
@@ -81,13 +82,14 @@ const TagSelector = ({ onRunNavigation }) => {
         <fieldset key={group}>
           <legend><strong>{group}</strong></legend>
           {endLocation.map((endpoint) => (
-            <label key={endpoint.name} style={{ display: "block" }}>
+            <label key={endpoint.name} style={{ display: "flex", alignItems: "center", marginBottom: "0.5em" }}>
               <input
                 type="radio"
                 name="endLocation"
                 checked={selectedEndpoint?.name === endpoint.name}
                 onChange={() => setSelectedEndpoint(endpoint)}
                 disabled={loading}
+                style={{ marginRight: "0.5em" }}
               />
               {endpoint.name}
             </label>
@@ -96,12 +98,13 @@ const TagSelector = ({ onRunNavigation }) => {
       ))}
 
       <h2>ルート生成をランダムにしますか？</h2>
-      <label style={{ display: "block", marginBottom: "1em" }}>
+      <label style={{ display: "flex", alignItems: "center", marginBottom: "0.5em" }}>
         <input
           type="checkbox"
           checked={randomroute}
           onChange={(e) => setRandomroute(e.target.checked)}
           disabled={loading}
+          style={{ marginRight: "0.5em" }}
         />
         ランダムに経由地を選択する
       </label>
