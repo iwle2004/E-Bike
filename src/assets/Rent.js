@@ -47,7 +47,8 @@ function Rent() {
                 if (data.is_target_met) {
                     navigate('/submit'); // page for "detection passed"
                 } else {
-                    navigate('/home');   // page for "detection failed"
+                    alert("QRコードをきれいに撮影お願いします")
+                    navigate('/rent');   // page for "detection failed"
                 }
             } else {
                 alert("Detection failed: " + data.message);
