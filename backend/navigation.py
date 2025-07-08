@@ -109,7 +109,7 @@ bottom_waypoints = 3 #最低の経由地数
 random_number = random.randint(1, len(data["elements"])) #経由地数以下のランダムな数生成
 if args.random_route:
     if len(points) >= bottom_waypoints:
-        selected_points = random.sample(points, random_number)
+        selected_points = random.sample(points, 1)
     else:
         selected_points = points
 else:
