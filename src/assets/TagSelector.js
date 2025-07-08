@@ -25,22 +25,37 @@ const tagGroups = {
   ],
 };
 
+const endpointGroups = {
+  "目的地": [
+    { name: "赤れんが博物館", lat: 35.47608894530083, lon: 135.387461090522 },
+    { name: "赤レンガパーク", lat: 35.474666114787986, lon: 135.38543573277403 },
+  ],
+};
+
 const TagSelector = ({ onRunNavigation }) => {
   const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedEndpoint, setSelectedEndpoint] = useState(endpointGroups["目的地"][0]);
+  const [loading, setLoading] = useState(false);
+  const [randomroute, setRandomroute] = useState(false);
 
-  const handleChange = (tagStr) => {
+  const handleTagChange = (tagStr) => {
     setSelectedTags((prev) =>
       prev.includes(tagStr) ? prev.filter((t) => t !== tagStr) : [...prev, tagStr]
     );
   };
 
-  const handleSubmit = () => {
-    onRunNavigation(selectedTags);
+  const handleSubmit = async () => {
+    setLoading(true);
+    try {
+      await onRunNavigation(selectedTags, selectedEndpoint, randomroute);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div>
-      <h2>行きたい場所を選んでください</h2>
+    <div style={{ padding: "2rem" }}>
+      <h2>行きたい場所のカテゴリを選んでください</h2>
       {Object.entries(tagGroups).map(([group, tags]) => (
         <fieldset key={group}>
           <legend><strong>{group}</strong></legend>
@@ -51,7 +66,8 @@ const TagSelector = ({ onRunNavigation }) => {
                 <input
                   type="checkbox"
                   checked={selectedTags.includes(tagStr)}
-                  onChange={() => handleChange(tagStr)}
+                  onChange={() => handleTagChange(tagStr)}
+                  disabled={loading}
                 />
                 {label}
               </label>
@@ -59,7 +75,58 @@ const TagSelector = ({ onRunNavigation }) => {
           })}
         </fieldset>
       ))}
-      <button onClick={handleSubmit}>ナビを開始する</button>
+
+      <h2>目的地を選択してください</h2>
+      {Object.entries(endpointGroups).map(([group, endLocation]) => (
+        <fieldset key={group}>
+          <legend><strong>{group}</strong></legend>
+          {endLocation.map((endpoint) => (
+            <label key={endpoint.name} style={{ display: "block" }}>
+              <input
+                type="radio"
+                name="endLocation"
+                checked={selectedEndpoint?.name === endpoint.name}
+                onChange={() => setSelectedEndpoint(endpoint)}
+                disabled={loading}
+              />
+              {endpoint.name}
+            </label>
+          ))}
+        </fieldset>
+      ))}
+
+      <h2>ルート生成をランダムにしますか？</h2>
+      <label style={{ display: "block", marginBottom: "1em" }}>
+        <input
+          type="checkbox"
+          checked={randomroute}
+          onChange={(e) => setRandomroute(e.target.checked)}
+          disabled={loading}
+        />
+        ランダムに経由地を選択する
+      </label>
+
+      <button onClick={handleSubmit} disabled={loading}>
+        {loading ? "ナビ生成中..." : "ナビを開始する"}
+      </button>
+
+      {loading && <div className="spinner" />}
+
+      <style>{`
+        .spinner {
+          width: 40px;
+          height: 40px;
+          border: 5px solid #ccc;
+          border-top: 5px solid #3498db;
+          border-radius: 50%;
+          animation: spin 1s linear infinite;
+          margin: 1rem auto;
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 };

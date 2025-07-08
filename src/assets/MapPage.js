@@ -6,6 +6,7 @@ import TagSelector from "./TagSelector";
 function MapPage() {
   const [mapUrl, setMapUrl] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
+  //const [randomroute, setRandomRoute] = useState(false);
 
   // 🌍 現在地を取得
   useEffect(() => {
@@ -26,29 +27,34 @@ function MapPage() {
   }, []);
 
   // 📡 ナビゲーション開始リクエスト
-  const runNavigation = async (tags) => {
-    const apiUrl = process.env.REACT_APP_API_URL;
-    const baseUrl = apiUrl || "http://localhost:5000";
+  const runNavigation = async (tags, endLocation, randomroute) => {
+  const apiUrl = process.env.REACT_APP_API_URL;
+  const baseUrl = apiUrl || "http://localhost:5000";
 
-    try {
-      const res = await fetch(`${baseUrl}/run-navigation`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ tags, currentLocation }), // ✅ 現在地も送信
-      });
+  try {
+    const res = await fetch(`${baseUrl}/run-navigation`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        tags,
+        currentLocation,
+        random_route: randomroute,
+        endLocation
+      }),
+    });
 
-      const json = await res.json();
+    const json = await res.json();
 
-      if (json.status === "success" && json.filename) {
-        setMapUrl(`${baseUrl}/get-map/${json.filename}`);
-      } else {
-        alert("ナビ生成に失敗しましたmp: " + (json.message || ""));
-      }
-    } catch (err) {
-      console.error("通信エラー:", err);
-      alert("通信エラーが発生しましたa" + (err || ""));
+    if (json.status === "success" && json.filename) {
+      setMapUrl(`${baseUrl}/get-map/${json.filename}`);
+    } else {
+      alert("ナビ生成に失敗しましたmp: " + (json.message || ""));
     }
-  };
+  } catch (err) {
+    console.error("通信エラー:", err);
+    alert("通信エラーが発生しましたa" + (err || ""));
+  }
+};
 
   return (
     <div className="map-wrapper">

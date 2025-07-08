@@ -1,111 +1,183 @@
 import argparse
 import json
-import os
 import requests
 import sys
-from itertools import permutations
+import random
+import folium
+from folium import Popup
 import openrouteservice
 from openrouteservice import convert
-import folium
 
+# ------------------------- 引数解析 ------------------------- #
 parser = argparse.ArgumentParser()
-parser.add_argument("--tags", type=str, default="")
+parser.add_argument("--tags", type=str, default="", help="例: amenity=cafe")
 parser.add_argument("--output", type=str, required=True, help="出力するHTMLファイルパス")
 parser.add_argument("--currentLocation", type=str, required=True)
+parser.add_argument("--endLocation", type=str, required=True)
+parser.add_argument("--random_route", action="store_true", help="ルート上にランダム寄り道ピンを追加する")
 args = parser.parse_args()
 
+# ------------------------- 入力座標の解析 ------------------------- #
+start_dict = json.loads(args.currentLocation)
+start_point = (start_dict["lat"], start_dict["lon"])  # (lat, lon)
+
+end_dict = json.loads(args.endLocation)
+end_point = (end_dict["lat"], end_dict["lon"])  # (lat, lon)
+
+start_lonlat = (start_point[1], start_point[0])
+end_lonlat = (end_point[1], end_point[0])
+
+# ------------------------- OpenRouteService API ------------------------- #
+client = openrouteservice.Client(key="5b3ce3597851110001cf6248b9ea1dfdfdb7416eb962ef2ad2bd129e")
+ORS_PROFILE = "cycling-regular"  # または "driving-car"
+
+# ------------------------- タグパース ------------------------- #
 tags_str = args.tags.strip()
-print("Selected tags string:", tags_str)
-
-if not tags_str:
-    print("タグが選択されていません。終了します。")
-    sys.exit(0)
-
 tags_list = []
-for t in tags_str.split(","):
-    if "=" in t:
-        key, value = t.split("=", 1)
-        tags_list.append((key.strip(), value.strip()))
+if tags_str:
+    for t in tags_str.split(","):
+        if "=" in t:
+            key, value = t.split("=", 1)
+            tags_list.append((key.strip(), value.strip()))
 
-print("Parsed tags:", tags_list)
+# ------------------------- ユーティリティ：ジッター＆スナップ ------------------------- #
+def generate_waypoints_from_route(route_coords, count=3, jitter=0.0005):
+    if len(route_coords) < count:
+        return []
+    sampled_points = random.sample(route_coords, count)
 
-if not tags_list:
-    print("タグが正しく解析できません。終了します。")
-    sys.exit(0)
+    def jitter_point(p):
+        return (
+            p[0] + random.uniform(-jitter, jitter),
+            p[1] + random.uniform(-jitter, jitter)
+        )
 
-key, value = tags_list[0]
+    def snap_to_road(point):
+        lon, lat = point[1], point[0]
+        try:
+            nearest = client.nearest(coords=(lon, lat), profile=ORS_PROFILE)
+            return (nearest["coordinates"][1], nearest["coordinates"][0])
+        except:
+            return point
 
-search_box = "35.44880977985438, 135.35154309496215,35.498076744854764, 135.44095761784553"
+    jittered = [jitter_point(p) for p in sampled_points]
+    snapped = [snap_to_road(p) for p in jittered]
+    return snapped
 
-query = f"""
-[out:json];
-node[{key}={value}]({search_box});
-out body;
-"""
+# ------------------------- ユーティリティ：ルート取得 ------------------------- #
+def get_route_segments_with_waypoints(points):
+    all_coords = []
+    for i in range(len(points) - 1):
+        try:
+            res = client.directions([points[i], points[i + 1]], profile=ORS_PROFILE)
+            geometry = res['routes'][0]['geometry']
+            decoded = convert.decode_polyline(geometry)['coordinates']  # lon, lat
+            all_coords.extend(decoded)
+        except Exception as e:
+            print(f"ルート取得失敗: {points[i]} → {points[i+1]}: {e}")
+    return all_coords
 
-url = "http://overpass-api.de/api/interpreter"
-
+# ------------------------- ① 一旦直行ルートを取得 ------------------------- #
 try:
-    response = requests.post(url, data={"data": query}, timeout=30)
-    response.raise_for_status()
-except requests.RequestException as e:
-    print("Overpass APIリクエスト失敗:", e)
+    base_route = client.directions([start_lonlat, end_lonlat], profile=ORS_PROFILE)
+    base_geometry = base_route['routes'][0]['geometry']
+    decoded_route = convert.decode_polyline(base_geometry)['coordinates']  # (lon, lat)
+    base_route_latlon = [(lat, lon) for lon, lat in decoded_route]
+except Exception as e:
+    print("基礎ルートの取得に失敗しました:", e)
     sys.exit(1)
 
-data = response.json()
+# ------------------------- ② 経由地決定（random_route または tags） ------------------------- #
+selected_points = []
 
-if "elements" not in data or len(data["elements"]) == 0:
-    print("該当する地点が見つかりませんでした。")
-    sys.exit(0)
+if args.random_route:
+    selected_points = generate_waypoints_from_route(base_route_latlon, count=3, jitter=0.0005)
 
-points = []
-for element in data["elements"]:
-    lat = element["lat"]
-    lon = element["lon"]
-    name = element.get("tags", {}).get("name", "(名前なし)")
-    print(f"{name}: {lat}, {lon}")
-    points.append((lat, lon))
+elif tags_list:
+    key, value = tags_list[0]
+    center_lat = (start_point[0] + end_point[0]) / 2
+    center_lon = (start_point[1] + end_point[1]) / 2
+    radius = 3000  # meters
 
-# JSON文字列 → dict → (lat, lon) タプル
-start_dict = json.loads(args.currentLocation)
-start_point = (start_dict["lat"], start_dict["lon"])
-end_point = (35.474763476187924, 135.38536802589823)
-
-client = openrouteservice.Client(key="5b3ce3597851110001cf6248b9ea1dfdfdb7416eb962ef2ad2bd129e")
-
-coords = [tuple(reversed(start_point))]
-coords.extend([tuple(reversed(p)) for p in points])
-coords.append(tuple(reversed(end_point)))
-
-route_coords = []
-
-for i in range(len(coords) - 1):
+    query = f"""
+    [out:json][timeout:25];
+    node[{key}="{value}"](around:{radius},{center_lat},{center_lon});
+    out body;
+    """
+    url = "http://overpass-api.de/api/interpreter"
     try:
-        routes = client.directions([coords[i], coords[i+1]], profile='foot-walking')
-        geometry = routes['routes'][0]['geometry']
-        decoded = convert.decode_polyline(geometry)
-        route_coords.extend(decoded['coordinates'])
+        response = requests.post(url, data={"data": query}, timeout=30)
+        response.raise_for_status()
+        data = response.json()
+        points = []
+        for el in data["elements"]:
+            if "lat" in el and "lon" in el:
+                name = el.get("tags", {}).get("name", "名前なし")
+                points.append({"lat": el["lat"], "lon": el["lon"], "name": name})
+        if len(points) > 3:
+            selected_points = random.sample(points, 5)
+        else:
+            selected_points = points
     except Exception as e:
-        print(f"ルート取得失敗: {coords[i]} → {coords[i+1]}:", e)
+        print("Overpassジャンル検索失敗:", e)
 
-if not points:
-    mean_lat, mean_lon = start_point
+# ------------------------- ③ フルルート構築 ------------------------- #
+full_points = [start_lonlat]
+if args.random_route:
+    full_points += [(p[1], p[0]) for p in selected_points]
 else:
-    mean_lat = sum(p[0] for p in points) / len(points)
-    mean_lon = sum(p[1] for p in points) / len(points)
+    full_points += [(p["lon"], p["lat"]) for p in selected_points]
+full_points.append(end_lonlat)
 
-m = folium.Map(location=(mean_lat, mean_lon), zoom_start=15)
+final_route_coords = get_route_segments_with_waypoints(full_points)
 
-folium.Marker(start_point, tooltip="出発点（東舞鶴駅）", icon=folium.Icon(color="red")).add_to(m)
-folium.Marker(end_point, tooltip="目的地（赤レンガパーク）", icon=folium.Icon(color="green")).add_to(m)
+# ------------------------- ④ 地図生成 ------------------------- #
 
-for i, p in enumerate(points):
-    folium.Marker(p, tooltip=f"地点{i}: {p}").add_to(m)
+# 地図中心計算
+if selected_points:
+    if args.random_route:
+        mean_lat = sum(p[0] for p in selected_points) / len(selected_points)
+        mean_lon = sum(p[1] for p in selected_points) / len(selected_points)
+    else:
+        mean_lat = sum(p["lat"] for p in selected_points) / len(selected_points)
+        mean_lon = sum(p["lon"] for p in selected_points) / len(selected_points)
+else:
+    mean_lat, mean_lon = start_point
 
-if route_coords:
-    route_latlon = [(lat, lon) for lon, lat in route_coords]
-    folium.PolyLine(route_latlon, color="blue", weight=4, opacity=0.7).add_to(m)
+m = folium.Map(location=(mean_lat, mean_lon), zoom_start=14)
 
-output_path = args.output
-m.save(output_path)
-print(f"地図作成完了: {output_path}")
+
+
+# 出発・目的地マーカー
+folium.Marker(start_point, tooltip="出発点", icon=folium.Icon(color="red")).add_to(m)
+folium.Marker(end_point, tooltip="目的地", icon=folium.Icon(color="green")).add_to(m)
+
+# 経由地マーカー
+if args.random_route:
+    for i, p in enumerate(selected_points):
+        folium.Marker(
+            (p[0], p[1]),
+            tooltip=f"経由地{i+1}",
+            popup=f"経由地{i+1}",
+            icon=folium.Icon(color="blue", icon="info-sign")
+        ).add_to(m)
+else:
+    for i, p in enumerate(selected_points):
+        popup = Popup(p["name"], max_width=300)
+        folium.Marker(
+            (p["lat"], p["lon"]),
+            tooltip=f"経由地{i+1}",
+            popup=popup,
+            icon=folium.Icon(color="blue", icon="info-sign")
+        ).add_to(m)
+
+# 寄り道経由地ありルートを青色で描画
+route_latlon = [(lat, lon) for lon, lat in final_route_coords]
+folium.PolyLine(route_latlon, color="blue", weight=4, opacity=0.7, tooltip="経由地ルート").add_to(m)
+
+# 直行ルート（灰色薄線）を先に描画
+folium.PolyLine(base_route_latlon, color="red", weight=3, opacity=0.8, tooltip="直行ルート").add_to(m)
+
+# ------------------------- ⑤ 保存 ------------------------- #
+m.save(args.output)
+print(f"✅ 地図作成完了: {args.output}")
