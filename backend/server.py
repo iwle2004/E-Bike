@@ -121,12 +121,10 @@ def run_detection():
         )
         result = detector.process_latest_image()
 
-    return send_from_directory(maps_dir, filename)
+        # Create a boolean: True if detected_count == 2, else False
+        is_target_met = (result.get("detected_count", 0) == 2)
 
-     # Create a boolean: True if detected_count == 2, else False
-    is_target_met = (result.get("detected_count", 0) == 2)
-
-    return jsonify({
+        return jsonify({
             "status": "success",
             "is_target_met": is_target_met,  # <-- this boolean is sent to frontend
             "detected_count": result.get("detected_count"),
@@ -135,11 +133,12 @@ def run_detection():
             "ArUco_check": result.get("ArUco_check")
         })
     except Exception as e:
-    print("Error during detection:", e)
-    return jsonify({
+        print("Error during detection:", e)
+        return jsonify({
             "status": "error",
             "message": str(e)
         }), 500
+        
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=True)
