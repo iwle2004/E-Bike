@@ -85,7 +85,7 @@ const TagSelector = ({ onRunNavigation }) => {
               <input
                 type="radio"
                 name="endLocation"
-                checked={randomroute?.name === endpoint.name}
+                checked={selectedEndpoint?.name === endpoint.name}
                 onChange={() => setSelectedEndpoint(endpoint)}
                 disabled={loading}
               />
