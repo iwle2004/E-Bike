@@ -9,8 +9,8 @@ const tagGroups = {
     { key: "tourism", type: "attraction", label: "<b>観光地</b>" },
   ],
   "飲食": [
-    { key: "amenity", type: "restaurant", label: "<b>レストラン</b>" },
-    { key: "amenity", type: "cafe", label: "<b>カフェ</b>" },
+    { key: "amenity", type: "restaurant", label: "<b>レストラン</b>（とと楽 / Cafe&Deli AZUR）" },
+    { key: "amenity", type: "cafe", label: "<b>カフェ</b>（チャイム / こもれび / GOOD SOUND COFFEE / 木馬）" },
     { key: "amenity", type: "fast_food", label: "<b>ファストフード</b>" },
   ],
   "買い物・便利施設": [
