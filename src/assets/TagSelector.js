@@ -100,6 +100,7 @@ const TagSelector = ({ onRunNavigation }) => {
       <fieldset key={group}>
         <legend><strong>{group}</strong></legend>
         {endLocation.map((endpoint) => {
+          return (
             <label
               key={endpoint.name}
               style={{
@@ -125,11 +126,11 @@ const TagSelector = ({ onRunNavigation }) => {
               />
               <span
                 className="tag-label"
-                dangerouslySetInnerHTML={{ __html: label }}
+                dangerouslySetInnerHTML={{ __html: endpoint.name }}
               />
-              {endpoint.name}
             </label>
-          })}
+          );
+        })}
         </fieldset>
       ))}
 
