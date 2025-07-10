@@ -57,35 +57,45 @@ const TagSelector = ({ onRunNavigation }) => {
     <div style={{ padding: "0.2rem", textAlign: "left" }}>
       <h2>行きたい場所のカテゴリを選んでください</h2>
       {Object.entries(tagGroups).map(([group, tags]) => (
-        <fieldset key={group}>
-          <legend><strong>{group}</strong></legend>
-          {tags.map(({ key, type, label }) => {
-            const tagStr = `${key}=${type}`;
-            return (
-              <label key={tagStr}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                gap: "0.5em",
-                width: "1000%",
-                maxWidth: "60px",
-                whiteSpace: "normal",        // ← 自然な改行を許可
-    wordBreak: "break-word",     // ← 単語の途中でも折り返す
-    overflowWrap: "break-word",  // ← 長い文字列のための保険
-              }}>
-                <input
-                  type="checkbox"
-                  checked={selectedTags.includes(tagStr)}
-                  onChange={() => handleTagChange(tagStr)}
-                  disabled={loading}
-                  style={{ flexShrink: 0 }}
-                />
-                {label}
-              </label>
-            );
-          })}
-        </fieldset>
+        <fieldset key={group} style={{ maxWidth: "500px" }}>
+  <legend><strong>{group}</strong></legend>
+  {tags.map(({ key, type, label }) => {
+    const tagStr = `${key}=${type}`;
+    return (
+      <label
+        key={tagStr}
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "flex-start",
+          gap: "0.25em",
+          width: "100%",           // ← fieldsetに合わせる
+        }}
+      >
+        <input
+          type="checkbox"
+          checked={selectedTags.includes(tagStr)}
+          onChange={() => handleTagChange(tagStr)}
+          disabled={loading}
+          style={{
+            flexShrink: 0,
+            marginTop: "0.2em",
+          }}
+        />
+        <span
+          style={{
+            wordBreak: "break-word",
+            overflowWrap: "break-word",
+            whiteSpace: "normal",
+          }}
+        >
+          {label}
+        </span>
+      </label>
+    );
+  })}
+</fieldset>
+
       ))}
 
       <h2>目的地を選択してください</h2>
