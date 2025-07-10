@@ -100,8 +100,6 @@ const TagSelector = ({ onRunNavigation }) => {
       <fieldset key={group}>
         <legend><strong>{group}</strong></legend>
         {endLocation.map((endpoint) => {
-          const tagStr = `${key}=${type}`;
-          return (
             <label
               key={endpoint.name}
               style={{
@@ -129,10 +127,10 @@ const TagSelector = ({ onRunNavigation }) => {
                 className="tag-label"
                 dangerouslySetInnerHTML={{ __html: label }}
               />
+              {endpoint.name}
             </label>
-          );
-        })}
-      </fieldset>
+          })}
+        </fieldset>
       ))}
 
       <h2>ルート生成をランダムにしますか？</h2>
