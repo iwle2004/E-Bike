@@ -68,11 +68,11 @@ const TagSelector = ({ onRunNavigation }) => {
                 flexDirection: "row",
                 alignItems: "center",
                 gap: "0.5em",
-                width: "100%",
+                width: "1000%",
                 maxWidth: "60px",
-                whiteSpace: "normal",         // 改行を許可
-    wordBreak: "keep-all",        // 日本語などで1文字ずつ改行されないように
-    overflowWrap: "break-word",   // 英単語やURLなど長い単語に対応
+                whiteSpace: "normal",        // ← 自然な改行を許可
+    wordBreak: "break-word",     // ← 単語の途中でも折り返す
+    overflowWrap: "break-word",  // ← 長い文字列のための保険
               }}>
                 <input
                   type="checkbox"
