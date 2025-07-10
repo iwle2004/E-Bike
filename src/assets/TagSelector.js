@@ -70,9 +70,9 @@ const TagSelector = ({ onRunNavigation }) => {
     gap: "0.5em",
     width: "100%",
     maxWidth: "60px",
-    whiteSpace: "nowrap",        // ← 改行を防ぐ
-    overflow: "hidden",          // ← はみ出し防止
-    //textOverflow: "ellipsis",    // ← はみ出し時に...表示
+    whiteSpace: "normal",        // ← 改行を防ぐ
+    overflow: "visible",          // ← はみ出し防止
+    textOverflow: "clip",    // ← はみ出し時に...表示
     writingMode: "horizontal-tb",
     direction: "ltr",
               }}>
