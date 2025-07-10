@@ -69,7 +69,7 @@ const TagSelector = ({ onRunNavigation }) => {
     alignItems: "center",
     gap: "0.5em",
     width: "100%",
-    maxWidth: "900px",
+    maxWidth: "600px",
     whiteSpace: "nowrap",        // ← 改行を防ぐ
     overflow: "hidden",          // ← はみ出し防止
     textOverflow: "ellipsis",    // ← はみ出し時に...表示
