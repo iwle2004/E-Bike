@@ -64,9 +64,9 @@ const TagSelector = ({ onRunNavigation }) => {
             return (
               <label
                 style={{
-                /*display: "flex",
+                display: "flex",
                 flexDirection: "row",
-                alignItems: "flex-start",*/
+                alignItems: "flex-start",
                 gap: "0.5em",
                 width: "100%",
                 }}>
