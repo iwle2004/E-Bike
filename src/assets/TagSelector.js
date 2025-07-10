@@ -77,8 +77,8 @@ const TagSelector = ({ onRunNavigation }) => {
     onChange={() => handleTagChange(tagStr)}
     disabled={loading}
     style={{
-      width: "60px",         // ✅ ← 小さく固定
-      height: "60px",
+      width: "16px",         // ✅ ← 小さく固定
+      height: "16px",
       flexShrink: 0,
       marginTop: "0.2em",
     }}
