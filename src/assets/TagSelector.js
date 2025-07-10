@@ -70,10 +70,11 @@ const TagSelector = ({ onRunNavigation }) => {
     gap: "0.5em",
     width: "100%",
     maxWidth: "60px",
-    whiteSpace: "normal",        // 改行を許可
-    wordBreak: "break-word",     // 長い単語も折り返し
-    overflow: "visible",         // はみ出しを許容
-    textOverflow: "clip",        // 省略せず表示
+    whiteSpace: "nowrap",        // ← 改行を防ぐ
+    overflow: "hidden",          // ← はみ出し防止
+    //textOverflow: "ellipsis",    // ← はみ出し時に...表示
+    writingMode: "horizontal-tb",
+    direction: "ltr",
               }}>
                 <input
                   type="checkbox"
