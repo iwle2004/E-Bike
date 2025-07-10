@@ -97,45 +97,53 @@ const TagSelector = ({ onRunNavigation }) => {
 
       <h2>目的地を選択してください</h2>
       {Object.entries(endpointGroups).map(([group, endLocation]) => (
-        <fieldset key={group}>
-          <legend><strong>{group}</strong></legend>
-          {endLocation.map((endpoint) => (
-            <label key={endpoint.name}
-            style={{
+      <fieldset key={group}>
+        <legend><strong>{group}</strong></legend>
+        {endLocation.map((endpoint) => {
+          const tagStr = `${key}=${type}`;
+          return (
+            <label
+              key={endpoint.name}
+              style={{
                 display: "flex",
-                alignItems: "flex-start", // 長いテキストに合わせて上揃え
-                justifyContent: "flex-start",
-                marginBottom: "0.5em",
-                gap: "0.5em",              // inputとテキストの間隔
-                maxWidth: "100%",         // 横幅制限
-                wordBreak: "break-word",  // テキストがはみ出ないように
-                whiteSpace: "normal",     // 折り返しを許可
-            }}>
+                flexDirection: "row",
+                alignItems: "flex-start",
+                gap: "0.5em",
+                width: "100%",
+                marginBottom: "1em", // 行間
+              }}
+            >
               <input
                 type="radio"
-                name="endLocation"
                 checked={selectedEndpoint?.name === endpoint.name}
                 onChange={() => setSelectedEndpoint(endpoint)}
                 disabled={loading}
-                style={{ flexShrink: 0 }}
+                style={{
+                  width: "16px",
+                  height: "16px",
+                  flexShrink: 0,
+                  marginTop: "0.2em",
+                }}
               />
-              {endpoint.name}
+              <span
+                className="tag-label"
+                dangerouslySetInnerHTML={{ __html: label }}
+              />
             </label>
-          ))}
-        </fieldset>
+          );
+        })}
+      </fieldset>
       ))}
 
       <h2>ルート生成をランダムにしますか？</h2>
       <label
       style={{
         display: "flex",
-        alignItems: "flex-start", // 長いテキストに合わせて上揃え
-        justifyContent: "flex-start",
-        marginBottom: "0.5em",
-        gap: "0.5em",              // inputとテキストの間隔
-        maxWidth: "100%",         // 横幅制限
-        wordBreak: "break-word",  // テキストがはみ出ないように
-        whiteSpace: "normal",     // 折り返しを許可
+        flexDirection: "row",
+        alignItems: "flex-start",
+        gap: "0.5em",
+        width: "100%",
+        marginBottom: "1em", // 行間
       }}>
         <input
           type="checkbox"
@@ -144,7 +152,7 @@ const TagSelector = ({ onRunNavigation }) => {
           disabled={loading}
           style={{ flexShrink: 0 }}
         />
-        ランダムに経由地を選択する
+        <b>ランダムに経由地を選択する</b>
       </label>
 
       <button onClick={handleSubmit} disabled={loading}>
@@ -169,20 +177,20 @@ const TagSelector = ({ onRunNavigation }) => {
         }
 
         .tag-label {
-    word-break: break-word;
-    overflow-wrap: anywhere;
-    white-space: normal;
-    display: inline-block;
-    max-width: 100%;
-    line-height: 1.5;
-  }
+          word-break: break-word;
+          overflow-wrap: anywhere;
+          white-space: normal;
+          display: inline-block;
+          max-width: 100%;
+          line-height: 1.5;
+        }
 
-  @media (max-width: 600px) {
-    .tag-label {
-      word-break: keep-all;
-      overflow-wrap: normal;
-    }
-  }
+        @media (max-width: 600px) {
+          .tag-label {
+            word-break: keep-all;
+            overflow-wrap: normal;
+          }
+        }
       `}</style>
     </div>
   );
