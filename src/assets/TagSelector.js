@@ -135,29 +135,34 @@ const TagSelector = ({ onRunNavigation }) => {
       ))}
 
       <h2>ルート生成をランダムにしますか？</h2>
-      <label
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        alignItems: "flex-start",
-        gap: "0.5em",
-        width: "100%",
-        marginBottom: "1em", // 行間
-      }}>
-        <input
-          type="checkbox"
-          checked={randomroute}
-          onChange={(e) => setRandomroute(e.target.checked)}
-          disabled={loading}
-          style={{
-            width: "16px",
-            height: "16px",
-            flexShrink: 0,
-            marginTop: "0.2em",
-          }}
-        />
-        <b>ランダムに経由地を選択する</b>
-      </label>
+<label
+  style={{
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: "0.5em",
+    width: "100%",
+    marginBottom: "1em",
+  }}
+>
+  <input
+    type="checkbox"
+    checked={randomroute}
+    onChange={(e) => setRandomroute(e.target.checked)}
+    disabled={loading}
+    style={{
+      width: "16px",
+      height: "16px",
+      flexShrink: 0,
+      marginTop: "0.2em",
+    }}
+  />
+  <span
+    className="tag-label"
+    dangerouslySetInnerHTML={{ __html: "<b>ランダムに経由地を選択する</b>" }}
+  />
+</label>
+
 
       <button onClick={handleSubmit} disabled={loading}>
         {loading ? "ナビ生成中..." : "ナビを開始する"}
