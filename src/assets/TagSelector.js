@@ -169,19 +169,20 @@ const TagSelector = ({ onRunNavigation }) => {
         }
 
         .tag-label {
-          word-break: normal;
-          overflow-wrap: break-word;
-          white-space: normal;
-          display: inline-block;
-          max-width: 100%;
-          line-height: 1.5;
-        }
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    white-space: normal;
+    display: inline-block;
+    max-width: 100%;
+    line-height: 1.5;
+  }
 
-        @media (max-width: 600px) {
-          .tag-label {
-            word-break: keep-all; /* 単語の途中で折り返さない */
-          }
-        }
+  @media (max-width: 600px) {
+    .tag-label {
+      word-break: keep-all;
+      overflow-wrap: normal;
+    }
+  }
       `}</style>
     </div>
   );
