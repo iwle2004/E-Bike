@@ -68,7 +68,7 @@ const TagSelector = ({ onRunNavigation }) => {
     flexDirection: "row",
     alignItems: "center",
     gap: "0.5em",
-    width: "100%",
+    width: "500%",
     maxWidth: "60px",
     whiteSpace: "normal",        // ← 改行を防ぐ
     overflow: "visible",          // ← はみ出し防止
