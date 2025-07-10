@@ -64,11 +64,12 @@ const TagSelector = ({ onRunNavigation }) => {
             return (
               <label
                 style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "flex-start",
-                gap: "0.5em",
-                width: "100%",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "flex-start",
+                  gap: "0.5em",
+                  width: "100%",
+                  marginBottom: "1em", //行間
                 }}>
               <input
                 type="checkbox"
