@@ -149,7 +149,12 @@ const TagSelector = ({ onRunNavigation }) => {
           checked={randomroute}
           onChange={(e) => setRandomroute(e.target.checked)}
           disabled={loading}
-          style={{ flexShrink: 0 }}
+          style={{
+            width: "16px",
+            height: "16px",
+            flexShrink: 0,
+            marginTop: "0.2em",
+          }}
         />
         <b>ランダムに経由地を選択する</b>
       </label>
