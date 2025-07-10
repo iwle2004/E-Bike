@@ -70,7 +70,7 @@ const TagSelector = ({ onRunNavigation }) => {
                 gap: "0.5em",
                 width: "100%",
                 maxWidth: "60px",
-                whiteSpace: "normal",        // ← 自然な改行を許可
+                whiteSpace: "nowrap",        // ← 自然な改行を許可
     wordBreak: "break-word",     // ← 単語の途中でも折り返す
     overflowWrap: "break-word",  // ← 長い文字列のための保険
               }}>
