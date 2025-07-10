@@ -63,35 +63,35 @@ const TagSelector = ({ onRunNavigation }) => {
     const tagStr = `${key}=${type}`;
     return (
       <label
-        key={tagStr}
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "flex-start",
-          gap: "0.25em",
-          width: "100%",           // ← fieldsetに合わせる
-        }}
-      >
-        <input
-          type="checkbox"
-          checked={selectedTags.includes(tagStr)}
-          onChange={() => handleTagChange(tagStr)}
-          disabled={loading}
-          style={{
-            flexShrink: 0,
-            marginTop: "0.2em",
-          }}
-        />
-        <span
-          style={{
-            wordBreak: "break-word",
-            overflowWrap: "break-word",
-            whiteSpace: "normal",
-          }}
-        >
-          {label}
-        </span>
-      </label>
+  style={{
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-start",
+    gap: "0.5em",
+    width: "100%",           // fieldsetにフィット
+  }}
+>
+  <input
+    type="checkbox"
+    checked={selectedTags.includes(tagStr)}
+    onChange={() => handleTagChange(tagStr)}
+    disabled={loading}
+    style={{
+      width: "60px",         // ✅ ← 小さく固定
+      height: "60px",
+      flexShrink: 0,
+      marginTop: "0.2em",
+    }}
+  />
+  <span
+    style={{
+      wordBreak: "break-word",
+      whiteSpace: "normal",
+    }}
+  >
+    {label}
+  </span>
+</label>
     );
   })}
 </fieldset>
