@@ -57,45 +57,42 @@ const TagSelector = ({ onRunNavigation }) => {
     <div style={{ padding: "0.2rem", textAlign: "left" }}>
       <h2>行きたい場所のカテゴリを選んでください</h2>
       {Object.entries(tagGroups).map(([group, tags]) => (
-        <fieldset key={group}>
-          <legend><strong>{group}</strong></legend>
-          {tags.map(({ key, type, label }) => {
-            const tagStr = `${key}=${type}`;
-            return (
-              <label
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "flex-start",
-                  gap: "0.5em",
-                  width: "100%",
-                  marginBottom: "1em", //行間
-                }}>
+      <fieldset key={group}>
+        <legend><strong>{group}</strong></legend>
+        {tags.map(({ key, type, label }) => {
+          const tagStr = `${key}=${type}`;
+          return (
+            <label
+              key={tagStr}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "flex-start",
+                gap: "0.5em",
+                width: "100%",
+                marginBottom: "1em", // 行間
+              }}
+            >
               <input
                 type="checkbox"
                 checked={selectedTags.includes(tagStr)}
                 onChange={() => handleTagChange(tagStr)}
                 disabled={loading}
                 style={{
-                  width: "16px", //チェックボックスのサイズ
+                  width: "16px",
                   height: "16px",
                   flexShrink: 0,
                   marginTop: "0.2em",
                 }}
               />
               <span
-                style={{
-                  wordBreak: "break-word",
-                  whiteSpace: "normal",
-                }}
-  className="tag-label"
-  dangerouslySetInnerHTML={{ __html: label }}
-              >{label}
-            </span>
+                className="tag-label"
+                dangerouslySetInnerHTML={{ __html: label }}
+              />
             </label>
-            );
-          })}
-        </fieldset>
+          );
+        })}
+      </fieldset>
       ))}
 
       <h2>目的地を選択してください</h2>
@@ -169,6 +166,21 @@ const TagSelector = ({ onRunNavigation }) => {
         @keyframes spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
+        }
+
+        .tag-label {
+          word-break: normal;
+          overflow-wrap: break-word;
+          white-space: normal;
+          display: inline-block;
+          max-width: 100%;
+          line-height: 1.5;
+        }
+
+        @media (max-width: 600px) {
+          .tag-label {
+            word-break: keep-all; /* 単語の途中で折り返さない */
+          }
         }
       `}</style>
     </div>
