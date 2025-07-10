@@ -58,44 +58,41 @@ const TagSelector = ({ onRunNavigation }) => {
       <h2>行きたい場所のカテゴリを選んでください</h2>
       {Object.entries(tagGroups).map(([group, tags]) => (
         <fieldset key={group}>
-  <legend><strong>{group}</strong></legend>
-  {tags.map(({ key, type, label }) => {
-    const tagStr = `${key}=${type}`;
-    return (
-      <label
-  style={{
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "flex-start",
-    gap: "0.5em",
-    width: "100%",
-  }}
->
-  <input
-    type="checkbox"
-    checked={selectedTags.includes(tagStr)}
-    onChange={() => handleTagChange(tagStr)}
-    disabled={loading}
-    style={{
-      width: "16px",
-      height: "16px",
-      flexShrink: 0,
-      marginTop: "0.2em",
-    }}
-  />
-  <span
-    style={{
-      wordBreak: "break-word",
-      whiteSpace: "normal",
-    }}
-  >
-    {label}
-  </span>
-</label>
-    );
-  })}
-</fieldset>
-
+          <legend><strong>{group}</strong></legend>
+          {tags.map(({ key, type, label }) => {
+            const tagStr = `${key}=${type}`;
+            return (
+              <label
+                style={{
+                /*display: "flex",
+                flexDirection: "row",
+                alignItems: "flex-start",*/
+                gap: "0.5em",
+                width: "100%",
+                }}>
+              <input
+                type="checkbox"
+                checked={selectedTags.includes(tagStr)}
+                onChange={() => handleTagChange(tagStr)}
+                disabled={loading}
+                style={{
+                  width: "16px", //チェックボックスのサイズ
+                  height: "16px",
+                  flexShrink: 0,
+                  marginTop: "0.2em",
+                }}
+              />
+              <span
+                style={{
+                  wordBreak: "break-word",
+                  whiteSpace: "normal",
+                }}
+              >{label}
+            </span>
+            </label>
+            );
+          })}
+        </fieldset>
       ))}
 
       <h2>目的地を選択してください</h2>
