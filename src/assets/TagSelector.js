@@ -65,15 +65,14 @@ const TagSelector = ({ onRunNavigation }) => {
               <label key={tagStr}
               style={{
                 display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: "0.5em",
-    width: "100%",
-    maxWidth: "60px",
-    whiteSpace: "nowrap",        // ← 改行を防ぐ
-    overflow: "visible",          // ← はみ出し防止
-    writingMode: "horizontal-tb",
-    direction: "ltr",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: "0.5em",
+                width: "100%",
+                maxWidth: "60px",
+                whiteSpace: "normal",        // ← 自然な改行を許可
+    wordBreak: "break-word",     // ← 単語の途中でも折り返す
+    overflowWrap: "break-word",  // ← 長い文字列のための保険
               }}>
                 <input
                   type="checkbox"
