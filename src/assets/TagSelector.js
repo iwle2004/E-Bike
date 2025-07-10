@@ -57,7 +57,7 @@ const TagSelector = ({ onRunNavigation }) => {
     <div style={{ padding: "0.2rem", textAlign: "left" }}>
       <h2>行きたい場所のカテゴリを選んでください</h2>
       {Object.entries(tagGroups).map(([group, tags]) => (
-        <fieldset key={group} style={{ maxWidth: "500px" }}>
+        <fieldset key={group}>
   <legend><strong>{group}</strong></legend>
   {tags.map(({ key, type, label }) => {
     const tagStr = `${key}=${type}`;
@@ -68,7 +68,7 @@ const TagSelector = ({ onRunNavigation }) => {
     flexDirection: "row",
     alignItems: "flex-start",
     gap: "0.5em",
-    width: "100%",           // fieldsetにフィット
+    width: "100%",
   }}
 >
   <input
@@ -77,7 +77,7 @@ const TagSelector = ({ onRunNavigation }) => {
     onChange={() => handleTagChange(tagStr)}
     disabled={loading}
     style={{
-      width: "16px",         // ✅ ← 小さく固定
+      width: "16px",
       height: "16px",
       flexShrink: 0,
       marginTop: "0.2em",
