@@ -88,6 +88,8 @@ const TagSelector = ({ onRunNavigation }) => {
                   wordBreak: "break-word",
                   whiteSpace: "normal",
                 }}
+  className="tag-label"
+  dangerouslySetInnerHTML={{ __html: label }}
               >{label}
             </span>
             </label>
