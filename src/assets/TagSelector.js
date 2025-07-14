@@ -54,7 +54,7 @@ const TagSelector = ({ onRunNavigation }) => {
   };
 
   return (
-    <div style={{ padding: "0.2rem", textAlign: "left" }}>
+    <div style={{ padding: "0.2rem", textAlign: "center" }}>
             <h2>ルート生成をランダムにしますか？</h2>
 <label
   style={{
@@ -83,6 +83,7 @@ const TagSelector = ({ onRunNavigation }) => {
     dangerouslySetInnerHTML={{ __html: "<b>ランダムに経由地を選択する</b>" }}
   />
 </label>
+<div style={{ padding: "0.2rem", textAlign: "left" }}></div>
       <h2>行きたい場所のカテゴリを選んでください</h2>
       {Object.entries(tagGroups).map(([group, tags]) => (
       <fieldset key={group}>
