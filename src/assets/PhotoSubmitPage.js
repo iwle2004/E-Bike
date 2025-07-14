@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './PhotoSubmitPage.css';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -7,12 +7,24 @@ import {
   getDownloadURL,
   deleteObject,
 } from 'firebase/storage';
-import { storage } from './firebase.js'; // adjust if your path differs
+import { doc, setDoc } from 'firebase/firestore';
+import { onAuthStateChanged } from 'firebase/auth';
+import { storage, auth, db } from './firebase.js';
 
 function PhotoSubmitPage() {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [userEmail, setUserEmail] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserEmail(user.email);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
@@ -24,6 +36,39 @@ function PhotoSubmitPage() {
     }
   };
 
+  const saveLocationToFirestore = async () => {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) {
+        return reject(new Error('Geolocation not supported'));
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const long = position.coords.longitude;
+
+          if (!userEmail) {
+            return reject(new Error('No user email found'));
+          }
+
+          try {
+            await setDoc(doc(db, 'locations', userEmail), {
+              email: userEmail,
+              latitude: lat,
+              longitude: long,
+              timestamp: new Date(),
+            });
+            console.log('📍 Location saved for', userEmail);
+            resolve();
+          } catch (err) {
+            reject(err);
+          }
+        },
+        (err) => reject(err)
+      );
+    });
+  };
+
   const handleSubmit = async () => {
     if (!file) {
       alert('Please select a photo before submitting.');
@@ -31,6 +76,7 @@ function PhotoSubmitPage() {
     }
 
     try {
+      await saveLocationToFirestore();
       const storagePath = `uploads/${Date.now()}_${file.name}`;
       const storageRef = ref(storage, storagePath);
 
