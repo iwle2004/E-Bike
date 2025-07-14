@@ -79,7 +79,7 @@ const TagSelector = ({ onRunNavigation }) => {
     />
     <span
       className="tag-label"
-      dangerouslySetInnerHTML={{ __html: "<b>ランダムに経由地を選択する</b>" }}
+      dangerouslySetInnerHTML={{ __html: "<b>ランダムにルートを作成</b>" }}
     />
   </label>
 </div>
