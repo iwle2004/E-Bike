@@ -110,7 +110,7 @@ const TagSelector = ({ onRunNavigation }) => {
                   width: "16px",
                   height: "16px",
                   flexShrink: 0,
-                  marginTop: "0.2em",
+                  marginBottom: "1em",
                 }}
               />
               <span
