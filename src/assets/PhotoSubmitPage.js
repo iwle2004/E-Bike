@@ -97,9 +97,16 @@ function PhotoSubmitPage() {
       <div className="example-box">
         <p className="example-title">撮影例</p>
         <div className="example-images-container">
-          <img src="./satsuei.jpg" alt="撮影例1" className="example-image" />
-          <img src="./satsuei.jpg" alt="撮影例2" className="example-image" />
-          <img src="./satsuei.jpg" alt="撮影例3" className="example-image" />
+          <img
+            src="./iishashin.jpeg"
+            alt="撮影例111"
+            className="example-image"
+          />
+          <img
+            src="./dameshashin.jpeg"
+            alt="撮影例2"
+            className="example-image"
+          />
         </div>
       </div>
 
