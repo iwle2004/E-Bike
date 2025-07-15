@@ -92,6 +92,7 @@ except Exception as e:
     sys.exit(1)
 
 # ------------------------- ② 経由地決定（random_route または tags） ------------------------- #
+# ------------------------- ② 経由地決定（random_route または tags） ------------------------- #
 selected_points = []
 
 if args.random_route:
@@ -118,9 +119,16 @@ elif tags_list:
             if "lat" in el and "lon" in el:
                 name = el.get("tags", {}).get("name", "名前なし")
                 points.append({"lat": el["lat"], "lon": el["lon"], "name": name})
-        selected_points = points  # ⭐ 修正：ランダム抽出せず全件表示
+        selected_points = points  # ⭐ 修正済：ランダム抽出せず全件表示
     except Exception as e:
         print("Overpassジャンル検索失敗:", e)
+
+# 🔽 fallback：どちらにも該当しない場合、自動でランダム経由地を設定
+if not args.random_route and not tags_list:
+    print("ランダム・タグの指定がないため、ルート上に自動ピンを生成します。")
+    selected_points = generate_waypoints_from_route(base_route_latlon, count=3, jitter=0.0005)
+    args.random_route = True  # ←描画ロジックのために true にする
+
 
 # ------------------------- ③ フルルート構築 ------------------------- #
 full_points = [start_lonlat]
@@ -150,6 +158,7 @@ folium.Marker(start_point, tooltip="出発点", icon=folium.Icon(color="red")).a
 folium.Marker(end_point, tooltip="目的地", icon=folium.Icon(color="green")).add_to(m)
 
 # 経由地マーカー
+# 経由地マーカー
 if args.random_route:
     for i, p in enumerate(selected_points):
         folium.Marker(
@@ -158,7 +167,7 @@ if args.random_route:
             popup=f"経由地{i+1}",
             icon=folium.Icon(color="blue", icon="info-sign")
         ).add_to(m)
-else:
+elif tags_list:
     for i, p in enumerate(selected_points):
         popup = Popup(p["name"], max_width=300)
         folium.Marker(
@@ -167,6 +176,7 @@ else:
             popup=popup,
             icon=folium.Icon(color="blue", icon="info-sign")
         ).add_to(m)
+
 
 # 寄り道経由地ありルートを青色で描画
 route_latlon = [(lat, lon) for lon, lat in final_route_coords]
