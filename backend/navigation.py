@@ -42,9 +42,13 @@ if tags_str:
 
 # ------------------------- ユーティリティ：ジッター＆スナップ ------------------------- #
 def generate_waypoints_from_route(route_coords, count=3, jitter=0.0005):
-    if len(route_coords) < count:
+    if len(route_coords) == 0:
         return []
-    sampled_points = random.sample(route_coords, count)
+
+    if len(route_coords) < count:
+        sampled_points = random.choices(route_coords, k=count)
+    else:
+        sampled_points = random.sample(route_coords, count)
 
     def jitter_point(p):
         return (
@@ -114,10 +118,7 @@ elif tags_list:
             if "lat" in el and "lon" in el:
                 name = el.get("tags", {}).get("name", "名前なし")
                 points.append({"lat": el["lat"], "lon": el["lon"], "name": name})
-        if len(points) > 3:
-            selected_points = random.sample(points, 5)
-        else:
-            selected_points = points
+        selected_points = points  # ⭐ 修正：ランダム抽出せず全件表示
     except Exception as e:
         print("Overpassジャンル検索失敗:", e)
 
@@ -132,8 +133,6 @@ full_points.append(end_lonlat)
 final_route_coords = get_route_segments_with_waypoints(full_points)
 
 # ------------------------- ④ 地図生成 ------------------------- #
-
-# 地図中心計算
 if selected_points:
     if args.random_route:
         mean_lat = sum(p[0] for p in selected_points) / len(selected_points)
@@ -145,8 +144,6 @@ else:
     mean_lat, mean_lon = start_point
 
 m = folium.Map(location=(mean_lat, mean_lon), zoom_start=14)
-
-
 
 # 出発・目的地マーカー
 folium.Marker(start_point, tooltip="出発点", icon=folium.Icon(color="red")).add_to(m)
@@ -175,7 +172,7 @@ else:
 route_latlon = [(lat, lon) for lon, lat in final_route_coords]
 folium.PolyLine(route_latlon, color="blue", weight=4, opacity=0.7, tooltip="経由地ルート").add_to(m)
 
-# 直行ルート（灰色薄線）を先に描画
+# 直行ルート（赤）を先に描画
 folium.PolyLine(base_route_latlon, color="red", weight=3, opacity=0.8, tooltip="直行ルート").add_to(m)
 
 # ------------------------- ⑤ 保存 ------------------------- #
