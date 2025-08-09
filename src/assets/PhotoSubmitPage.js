@@ -85,7 +85,7 @@ function PhotoSubmitPage() {
       const downloadURL = await getDownloadURL(storageRef);
       console.log('✅ Uploaded:', downloadURL);
       const baseUrl =
-        'https://e-bike-backend-hj9l.onrender.com/' || 'http://localhost:5000';
+        'https://e-bike-backend-lztz.onrender.com' || 'http://localhost:5000';
 
       // Send to Flask backend for detection
       const response = await fetch(`${baseUrl}/run-detection`, {
